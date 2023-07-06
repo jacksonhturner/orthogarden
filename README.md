@@ -38,9 +38,7 @@
 - masurca
 - augustus <<< entry point if no fastq
 - augustus convert to codingseqs/aa (getAnnoFasta)
--------------------------------------------
-  collect all genomes here
--------------------------------------------
+- [ collect all genomes here ]
 - orthofinder <<< bottleneck, all samples must collect here
 - orthofinder_finder (determine what cutoff to use automatically?)
   - consider a range of values
