@@ -1,7 +1,5 @@
-/* this is probably a very rough draft but one day it won't be! :) */
-
 process KRAKEN
-
+/* this is probably a very rough draft but one day it won't be! :) */
   input:
   path sample_id r1 r2
   
