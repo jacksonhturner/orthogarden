@@ -1,7 +1,7 @@
 /* still quite drafty :') */
 
 process KRAKEN {
-  label 'kraken'
+  label 'kraken2'
 
   publishDir(path: "${publishDir)/kraken/${outdir_name}", mode:copy)
 
