@@ -1,6 +1,6 @@
 /* still quite drafty :') */
 
-process KRAKEN {
+process KRAKEN2 {
   label 'kraken2'
 
   publishDir(path: "${publishDir)/kraken/${outdir_name}", mode:copy)
