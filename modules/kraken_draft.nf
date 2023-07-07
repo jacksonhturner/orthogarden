@@ -19,7 +19,7 @@ process KRAKEN {
     --db ${kraken_database} 
     --paired 
     --report $sample_id.kreport 
-    --unclassified-out ${sample_id}.#.unclassified.fq ${r1}_R1_paired.fastq.gz ${r2}_R2_paired.fastq.gz > ${sample_id}.kraken 
+    --unclassified-out ${sample_id}.#.unclassified.fq ${trimmed_reads}.r1 ${trimmed_reads}.r2 > ${outdir_name}_kraken
     --threads 5
     """
 }
