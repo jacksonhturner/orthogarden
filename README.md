@@ -33,6 +33,7 @@
 
 ## steps:
 - parse metadate (split fastq and fasta into two channels)
+  - check if files are compressed (consider if this matters for entry point)
 - trimming
 - kraken2
 - masurca
