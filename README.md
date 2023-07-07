@@ -1,9 +1,9 @@
 # orthogarden
 
 ## todo:
-- [ ] create main.nf
-- [ ] create nextflow.config
-- [ ] start a few modules
+- [x] create main.nf
+- [x] create nextflow.config
+- [x] start a few modules
 - [ ] create configs (dir) with local and slurm
 - [ ] determine the best container for each tool
   - prioritize quay.io most of the time
