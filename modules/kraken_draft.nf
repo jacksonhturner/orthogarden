@@ -7,7 +7,7 @@ process KRAKEN {
 
   input:  
     tuple val(metadata), path(reads)
-    path(kraken_database)
+    path(kraken_database) // do we want to give users the ability to choose their own database? //
     val outdir_name
   
   output:
