@@ -3,7 +3,7 @@
 process KRAKEN2 {
   label 'kraken2'
 
-  publishDir(path: "${publishDir)/kraken/${outdir_name}", mode:copy)
+  publishDir(path: "${publishDir}/kraken/${outdir_name}", mode:copy)
 
   input:  
     tuple val(metadata), path(trimmed_reads)
