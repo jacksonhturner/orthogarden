@@ -1,6 +1,6 @@
 nextflow.enable.dsl=2
 
-include { PARSE_METADATA                  } from "modules/metadata.nf"
+include { PARSE_METADATA ; READS_TO_CH    } from "modules/metadata.nf"
 include { CUTADAPT_ADAPTERS               } from "modules/cutadapt.nf"
 include { FASTQC as FQRAW                 } from "modules/fastqc.nf"
 include { FASTQC as FQTRIM                } from "modules/fastqc.nf"
@@ -11,6 +11,7 @@ workflow {
     ch_input = file(params.input)
 
     PARSE_METADATA(ch_input)
+    READS_TO_CH(PARSE_METADATA.out.reads_csv)
 
     if (!params.skip_qc) {
         FQRAW(ch_reads_raw, "raw")
