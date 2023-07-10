@@ -20,12 +20,12 @@ process TRIMMOMATIC {
     script:
         """
         java -jar trimmomatic-0.39.jar PE \
-        ${reads.r1} \
-        ${reads.r2} \
-        ${reads.r1}_paired.fastq.gz \
-        ${reads.r1}_unpaired.fastq.gz \
-        ${reads.r2}_paired.fastq.gz \
-        ${reads.r2}_unpaired.fastq.gz \
+        ${r1} \
+        ${r2} \
+        ${r1}_paired.fastq.gz \
+        ${r1}_unpaired.fastq.gz \
+        ${r2}_paired.fastq.gz \
+        ${r2}_unpaired.fastq.gz \
         ILLUMINACLIP:${adapters} LEADING:${leading} TRAILING:${trailing} SLIDINGWINDOW:${slidingwindow} MINLEN:${minlen}
         """
 }
