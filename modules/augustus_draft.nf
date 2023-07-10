@@ -8,11 +8,12 @@ process AUGUSTUS {
         val augustus_ref
 
     output:
-        path("augustus_$id"/${id}.gff), emit: augustus_ch
+        tuple val(id), path("augustus_$id"/${id}.aa), path("augustus_$id"/${id}.cds), emit: augustus_ch
 
      script:
         """
         mkdir augustus_$id
         augustus --codingseq=on --species=${augustus_ref} ${masurca} > ${id}.gff
+        getAnnoFasta ${id}.gff
         """
 }
