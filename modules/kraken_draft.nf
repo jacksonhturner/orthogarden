@@ -10,7 +10,7 @@ process KRAKEN2 {
     path(kraken_database) // do we want to give users the ability to choose their own database? //
   
   output:
-    tuple val(id), path(${metadata.sample_id}.1.unclassified.fq), path(${metadata.sample_id}.2.unclassified.fq), emit: kraken_ch
+    tuple val(id), path("${metadata.sample_id}.1.unclassified.fq"), path("${metadata.sample_id}.2.unclassified.fq"), emit: kraken_ch
   
   script:
     """
