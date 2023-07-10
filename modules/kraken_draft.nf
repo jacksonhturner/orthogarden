@@ -14,11 +14,11 @@ process KRAKEN2 {
   
   script:
     """
-    kraken2 
-    --db ${kraken_database} 
-    --paired 
-    --report ${metadata.sample_id}.kreport 
-    --unclassified-out ${metadata.sample_id}.#.unclassified.fq ${trimmed_reads}.r1 ${trimmed_reads}.r2 > ${metadata.sample_id}_kraken
+    kraken2 \
+    --db ${kraken_database} \
+    --paired \
+    --report ${metadata.sample_id}.kreport \
+    --unclassified-out ${metadata.sample_id}.#.unclassified.fq ${trimmed_reads}.r1 ${trimmed_reads}.r2 > ${metadata.sample_id}_kraken \
     --threads 5
     """
 }
