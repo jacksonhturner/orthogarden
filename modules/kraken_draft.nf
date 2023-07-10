@@ -1,5 +1,3 @@
-/* still quite drafty :') */
-
 process KRAKEN2 {
   label 'kraken2'
 
