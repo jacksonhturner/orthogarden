@@ -1,8 +1,6 @@
-/* still quite drafty :') */
-
 process KRAKEN2 {
-  label 'kraken2'
-  label 'sup_mem'
+  label "kraken2"
+  label "sup_mem"
 
   publishDir(path: "${publish_dir}/kraken/", mode: "symlink")
 

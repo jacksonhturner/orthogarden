@@ -1,6 +1,6 @@
 process CUTADAPT_ADAPTERS {
-    label 'cutadapt'
-    label 'lil_mem'
+    label "cutadapt"
+    label "lil_mem"
 
     publishDir(path: "${publish_dir}/cutadapt", mode: "symlink")
 
