@@ -6,7 +6,7 @@ process KRAKEN2 {
   publishDir(path: "${publishDir}/kraken/${outdir_name}", mode:copy)
 
   input:  
-    tuple val(metadata)
+    tuple val path(id), path(r1), path (r2)
     path(trimmed_reads)
     path(kraken_database) // do we want to give users the ability to choose their own database? //
   
