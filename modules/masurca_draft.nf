@@ -1,5 +1,5 @@
 process MASURCA {
-    // draft ///
+    label 'masurca'
 
     publishDir(path: "${publish_dir}/masurca", mode:softlink)
 
