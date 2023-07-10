@@ -1,6 +1,4 @@
 process TRIMMOMATIC {
-    // draft //
-  
     label 'trimmomatic'
 
     publishDir(path: "${publish_dir}/trimmomatic/, mode: "symlink")
