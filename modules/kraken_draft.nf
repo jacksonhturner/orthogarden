@@ -7,7 +7,6 @@ process KRAKEN2 {
 
   input:  
     tuple val path(id), path(trimmed_reads.r1), path (trimmed_reads.r2)
-    path(trimmed_reads)
     path(kraken_database) // do we want to give users the ability to choose their own database? //
   
   output:
