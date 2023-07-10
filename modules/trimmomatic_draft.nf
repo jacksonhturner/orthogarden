@@ -15,7 +15,7 @@ process TRIMMOMATIC {
         val minlen
 
     output:
-        tuple val($metadata.sample_id), path("trimmomatic_${reads.r1}_paired.fastq.gz"), path("trimmomatic_${reads.r2}_paired.fastq.gz"), emit: trimmed_reads
+        tuple val($id, path("trimmomatic_${reads.r1}_paired.fastq.gz"), path("trimmomatic_${reads.r2}_paired.fastq.gz"), emit: trimmed_reads
 
     script:
         """
