@@ -16,18 +16,3 @@ process PARSE_METADATA {
             ${design}
         """
 }
-
-process READS_TO_CH {
-    
-    input:
-        path reads_csv
-
-    output:
-        ch_reads_raw
-    
-    Channel
-    .fromPath( reads_csv )
-    .splitCsv( header: true, sep: ',' )
-    .map { row -> tuple( row.id, file(row.r1), file(row.r2) ) }
-    .set { ch_reads_raw }
-}
