@@ -5,15 +5,15 @@ process FASTQC {
     publishDir(path: "${publish_dir}/qc/${outdir_name}", mode: "copy")
 
     input:
-        tuple val(metadata), path(reads)
+        tuple val(id), path(r1), path(r2)
         val outdir_name
 
     output:
-        path("fastqc_${metadata.sampleName}_logs"), emit: fastq_ch
+        path("fastqc_${id}_logs"), emit: fastq_ch
 
     script:
         """
-        mkdir fastqc_${metadata.sampleName}_logs
-        fastqc -o fastqc_${metadata.sampleName}_logs -q ${reads}
+        mkdir fastqc_${id}_logs
+        fastqc -o fastqc_${id}_logs -q ${r1} ${r2}
         """
 }
