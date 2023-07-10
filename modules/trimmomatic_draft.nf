@@ -6,7 +6,7 @@ process TRIMMOMATIC {
     publishDir(path: "${publish_dir}/trimmomatic/, mode: "symlink")
 
     input: 
-        tuple val(metadata)
+        tuple val(id), path(r1), path(r2)
         path(reads)
         val adapters
         val leading
