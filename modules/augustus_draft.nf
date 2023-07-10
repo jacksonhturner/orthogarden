@@ -14,6 +14,6 @@ process AUGUSTUS {
         """
         mkdir augustus_$id
         augustus --codingseq=on --species=${augustus_ref} ${masurca} > ${id}.gff
-        getAnnoFasta ${id}.gff
+        getAnnoFasta.pl ${id}.gff
         """
 }
