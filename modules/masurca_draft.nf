@@ -7,7 +7,7 @@ process MASURCA {
         tuple val(id), path(kraken.r1), path(kraken.r2)
 
     output:
-        path("masurca_${id}"), emit: masurca_ch
+        path("masurca_${id}"/primary_genome.scf), emit: masurca_ch
 
     script:
         """
