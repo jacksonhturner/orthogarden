@@ -8,10 +8,10 @@ process SEQKIT {
         tuple val (ortho_id), path(ortholog_nucl)
 
     output:
-        path("2_nucl_seqs"), emit: seqkit_ch
+        path("${id}.aa"), emit: seqkit_ch
         
     script:
         """
-        seqkit translate ${id}_nucl.fasta > {id}_aa.fasta; done
+        seqkit translate ${id}.fasta > ${id}.aa; done
         """
 }
