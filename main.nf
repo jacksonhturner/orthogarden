@@ -10,6 +10,7 @@ include { KRAKEN2                           } from "./modules/kraken2.nf"
 include { MASURCA_CONFIG ; MASURCA_ASSEMBLE } from "./modules/masurca.nf"
 include { AUGUSTUS as AUGUSTUS_FASTA        } from "./modules/augustus.nf"
 include { AUGUSTUS as AUGUSTUS_READS        } from "./modules/augustus.nf"
+include { AUGUSTUS_PROT                     } from "./modules/augustus.nf"
 
 workflow {
     ch_input = file(params.input)
@@ -54,13 +55,10 @@ workflow {
     MASURCA_CONFIG(ch_reads_pre_assembly)
     MASURCA_ASSEMBLE(MASURCA_CONFIG.out.masurca_config)
 
-    ch_fasta.view()
     AUGUSTUS_FASTA(ch_fasta, params.augustus_ref)
     AUGUSTUS_READS(MASURCA_ASSEMBLE.out.masurca_ch, params.augustus_ref)
-
-    augustus_fasta_ch = AUGUSTUS_FASTA.out.augustus_ch.collect()
-    augustus_reads_ch = AUGUSTUS_READS.out.augustus_ch.collect()
-    augustus_fasta_ch.join(augustus_reads_ch).view()
+    AUGUSTUS_PROT(AUGUSTUS_FASTA.out.augustus_ch.concat(AUGUSTUS_READS.out.augustus_ch))
+    AUGUSTUS_PROT.out.aa_ch.view()
 
 }
 
