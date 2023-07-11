@@ -1,21 +1,21 @@
 process PASTA{
     label 'pasta'
+    label 'big_mem'
     
-    publishDir(path: "${publish_dir}/masurca", mode: "symlink")
+    publishDir(path: "${publish_dir}/pasta", mode: "symlink")
 
     input:
-        path(seqkit)
+        tuple val(id), path(seqkit)
         
     output:
-        path("3_pasta"), emit: pasta_ch
+        path("${id}_pasta.aa"), emit: pasta_ch
 
     script:
         """
-        cd 2_aa_seqs
-        for FILE in *.fasta; do python run_pasta.py \
-        -i $FILE \
-        -j $FILE \
-        -o ../3_pasta/$FILE \
+         python run_pasta.py \
+        -i ${id}.aa \
+        -j ${id}.aa \
+        -o ${id}_pasta.aa \
         -d Protein \
         --max-mem-mb 2048; done
         cd ..
