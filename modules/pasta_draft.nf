@@ -8,7 +8,7 @@ process PASTA{
         tuple val(ortho_id), path(seqkit)
         
     output:
-        path("${id}_pasta.aa"), emit: pasta_ch
+        path("${id}_pasta.aa/*marker001*"), emit: pasta_ch
 
     script:
         """
@@ -18,6 +18,5 @@ process PASTA{
         -o ${id}_pasta.aa \
         -d Protein \
         --max-mem-mb 2048; done
-        cd ..
         """
 }
