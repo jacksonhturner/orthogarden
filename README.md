@@ -57,5 +57,4 @@
 
 ## stetch goal:
 - allow a pre-made augustus training model (fire, directory)
-
-
+- create better orthologs from poor assemblies using nearest neighbors from final phylogeny
