@@ -5,7 +5,7 @@ process PASTA{
     publishDir(path: "${publish_dir}/pasta", mode: "symlink")
 
     input:
-        tuple val(id), path(seqkit)
+        tuple val(ortho_id), path(seqkit)
         
     output:
         path("${id}_pasta.aa"), emit: pasta_ch
