@@ -11,6 +11,7 @@ include { MASURCA_CONFIG ; MASURCA_ASSEMBLE } from "./modules/masurca.nf"
 include { AUGUSTUS as AUGUSTUS_FASTA        } from "./modules/augustus.nf"
 include { AUGUSTUS as AUGUSTUS_READS        } from "./modules/augustus.nf"
 include { AUGUSTUS_PROT                     } from "./modules/augustus.nf"
+include { ORTHOFINDER ; ORTHOFINDER_FINDER  } from "./modules/orthofinder.nf"
 
 workflow {
     ch_input = file(params.input)
@@ -58,8 +59,9 @@ workflow {
     AUGUSTUS_FASTA(ch_fasta, params.augustus_ref)
     AUGUSTUS_READS(MASURCA_ASSEMBLE.out.masurca_ch, params.augustus_ref)
     AUGUSTUS_PROT(AUGUSTUS_FASTA.out.augustus_ch.concat(AUGUSTUS_READS.out.augustus_ch))
-    AUGUSTUS_PROT.out.aa_ch.view()
 
+    ORTHOFINDER(AUGUSTUS_PROT.out.aa_ch.collect())
+    ORTHOFINDER_FINDER(ORTHOFINDER.out.orthofinder_ch, params.threshold_val, AUGUSTUS_PROT.out.codingseq_ch.collect())
 }
 
 

@@ -2,7 +2,7 @@ process AUGUSTUS {
     label "augustus"
     // label "med_mem"
 
-    // publishDir(path: "${publish_dir}/augustus", mode: "symlink")
+    // publishDir(path: "${publish_dir}/augustus/gff", mode: "symlink")
 
     input:
         tuple val(id), path(fasta)
@@ -20,15 +20,18 @@ process AUGUSTUS {
 process AUGUSTUS_PROT {
     label "augustus"
 
+    publishDir(path: "${publish_dir}/augustus/sequences", mode: "symlink")
+
     input:
         tuple val(id), path(gff)
 
     output:
-        path("*.aa"), emit: aa_ch
+        path("*.faa"), emit: aa_ch
         path("*.codingseq"), emit: codingseq_ch
 
     script:
         """
         getAnnoFasta.pl $gff
+        mv ${gff.baseName}.aa ${gff.baseName}.faa
         """
 }
