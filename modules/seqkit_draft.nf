@@ -1,11 +1,11 @@
 process SEQKIT {
-    label "seqkit"
-    label "lil_mem"
+  label "seqkit"
+  label "lil_mem"
 
-    publishDir(path: "${publish_dir}/seqkit", mode: "symlink")
+  publishDir(path: "${publish_dir}/seqkit", mode: "symlink")
 
-    input:
-        path(orthofinder_finder_ch)
+  input:
+    path(orthofinder_finder_ch)
 
     output:
         path("*.aa"), emit: seqkit_ch
