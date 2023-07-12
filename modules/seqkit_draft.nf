@@ -5,13 +5,14 @@ process SEQKIT {
     publishDir(path: "${publish_dir}/seqkit", mode: "symlink")
 
     input:
-        tuple val(ortho_id), path(ortholog_nucl)
+        path(orthofinder_finder_ch)
 
     output:
-        path("${id}.aa"), emit: seqkit_ch
+        path("*.aa"), emit: seqkit_ch
         
     script:
         """
-        seqkit translate ${id}.fasta > ${id}.aa; done
+        cd off_narrowed*
+        for FILE in *.fasta; do seqkit translate $FILE > ${FILE%%fa}.aa; done
         """
 }
