@@ -7,12 +7,12 @@ process SEQKIT {
   input:
     path(orthofinder_finder_ch)
 
-    output:
-        path("*.aa"), emit: seqkit_ch
+  output:
+    path("*.aa"), emit: seqkit_ch
         
-    script:
-        """
-        cd off_narrowed*
-        for FILE in *.fasta; do seqkit translate $FILE > ${FILE%%fa}.aa; done
-        """
+  script:
+    """
+    cd off_narrowed*
+    for FILE in *.fasta; do seqkit translate $FILE > ${FILE%%fa}.aa; done
+    """
 }
