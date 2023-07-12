@@ -1,6 +1,6 @@
 process SEQKIT {
-    label 'seqkit'
-    label 'lil_mem"
+    label "seqkit"
+    label "lil_mem"
 
     publishDir(path: "${publish_dir}/seqkit", mode: "symlink")
 
