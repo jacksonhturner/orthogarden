@@ -12,6 +12,6 @@ process TRANSLATORX {
 
     script:
         """
-        perl translatorx.pl -i ${id}.fasta -a ${id}.aa -o ${id}.nt.aligned
+        translatorx.pl -i ${id}.fasta -a ${id}.aa -o ${id}.nt.aligned
         """
 }
