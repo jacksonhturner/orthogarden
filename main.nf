@@ -12,6 +12,8 @@ include { AUGUSTUS as AUGUSTUS_FASTA        } from "./modules/augustus.nf"
 include { AUGUSTUS as AUGUSTUS_READS        } from "./modules/augustus.nf"
 include { AUGUSTUS_PROT                     } from "./modules/augustus.nf"
 include { ORTHOFINDER ; ORTHOFINDER_FINDER  } from "./modules/orthofinder.nf"
+include { SEQKIT                            } from "./modules/seqkit.nf"
+include { PRE_PASTA ; PASTA                 } from "./modules/pasta.nf"
 
 workflow {
     ch_input = file(params.input)
@@ -62,6 +64,11 @@ workflow {
 
     ORTHOFINDER(AUGUSTUS_PROT.out.aa_ch.collect())
     ORTHOFINDER_FINDER(ORTHOFINDER.out.orthofinder_ch, params.threshold_val, AUGUSTUS_PROT.out.codingseq_ch.collect())
+
+    SEQKIT(ORTHOFINDER_FINDER.out.off_ch.flatten())
+    
+    PRE_PASTA(SEQKIT.out.seqkit_ch.flatten())
+    PASTA(PRE_PASTA.out.pre_pasta_ch.flatten())
 }
 
 

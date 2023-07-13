@@ -30,7 +30,7 @@ process ORTHOFINDER_FINDER {
         path(codingseq_ch)
 
     output:
-        path("off_narrowed_*"), emit: orthofinder_finder_ch
+        path("off_narrowed_${threshold_val}/*.fa"), emit: off_ch
 
     script:
         """
