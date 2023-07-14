@@ -13,7 +13,8 @@ include { AUGUSTUS as AUGUSTUS_READS        } from "./modules/augustus.nf"
 include { AUGUSTUS_PROT                     } from "./modules/augustus.nf"
 include { ORTHOFINDER ; ORTHOFINDER_FINDER  } from "./modules/orthofinder.nf"
 include { SEQKIT                            } from "./modules/seqkit.nf"
-include { PRE_PASTA ; PASTA                 } from "./modules/pasta.nf"
+include { PRE_MAFFT ; MAFFT                 } from "./modules/mafft.nf"
+include { TRANSLATORX                       } from "./modules/translatorx.nf"
 
 workflow {
     ch_input = file(params.input)
@@ -67,8 +68,13 @@ workflow {
 
     SEQKIT(ORTHOFINDER_FINDER.out.off_ch.flatten())
     
-    PRE_PASTA(SEQKIT.out.seqkit_ch.flatten())
-    PASTA(PRE_PASTA.out.pre_pasta_ch.flatten())
-}
+    PRE_MAFFT(SEQKIT.out.seqkit_ch.flatten())
+    MAFFT(PRE_MAFFT.out.pre_mafft_ch.flatten())
 
+    ortho_id = MAFFT.out.mafft_ch.flatten().filter(/OG.*)
+  
+    ortho_id.view()
+
+    // TRANSLATORX(ORTHOFINDER_FINDER.out.off_ch.flatten(),MAFFT.out.mafft_ch.flatten())
+}
 
