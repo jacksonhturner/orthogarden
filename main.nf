@@ -17,7 +17,7 @@ include { PRE_MAFFT ; MAFFT                 } from "./modules/mafft.nf"
 include { TRANSLATORX                       } from "./modules/translatorx.nf"
 include { TRIMAL                            } from "./modules/trimal.nf"
 include { REMOVE_THIRDS                     } from "./modules/remove_thirds.nf"
-include { IQTREE                            } from "./modules/iqtree.nf"
+include { IQTREE ; IQTREE_WITH_THIRDS       } from "./modules/iqtree.nf"
 
 workflow {
     ch_input = file(params.input)
@@ -78,9 +78,12 @@ workflow {
  
     TRIMAL(TRANSLATORX.out.translatorx_ch.flatten(), params.masking_threshold)
 
-    REMOVE_THIRDS(TRIMAL.out.trimal_ch.flatten())
-
-    IQTREE(REMOVE_THIRDS.out.remove_thirds_ch.collect())
+if (!params.retain_third_pos) {
+        REMOVE_THIRDS(TRIMAL.out.trimal_ch.flatten())
+        IQTREE(REMOVE_THIRDS.out.remove_thirds_ch.collect())
+    } else {
+        IQTREE_WITH_THIRDS(TRIMAL.out.trimal_ch.collect())
+}
 
 }
 
