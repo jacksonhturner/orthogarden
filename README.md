@@ -5,7 +5,7 @@
 - [x] create nextflow.config
 - [x] start a few modules
 - [ ] create configs (dir) with local and slurm
-- [ ] determine the best container for each tool
+- [x] determine the best container for each tool
   - prioritize quay.io most of the time
   - biocontainers as well
   - dockerhub is also good
