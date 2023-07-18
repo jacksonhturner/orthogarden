@@ -12,6 +12,7 @@
 - [ ] determine 4 or so smaller files to test the pipeline
   - also consider files that performed poorly with/without trimming
   - also consider running Marcin's files again to confirm output
+  - also consider running Axel's beetles
 
 
 ## abstract goals:
