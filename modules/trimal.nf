@@ -5,14 +5,14 @@ process TRIMAL{
     publishDir(path: "${publish_dir}/trimal", mode: "symlink")
 
     input:
-      tuple val(ortho_id), path(translatorx)
+      path(translatorx)
       val(masking_threshold)
 
     output:
-        path("${id}_masked.fasta"), emit: trimal_ch
+        path("${translatorx}.masked"), emit: trimal_ch
 
     script:
         """
-        trimal -in ${id}*nt_*.fasta -out ${id}_masked.fasta -gt ${masking_threshold}
+        trimal -in ${translatorx} -out ${translatorx}.masked -gt ${masking_threshold}
         """
 }

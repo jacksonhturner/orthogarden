@@ -4,10 +4,10 @@ process PRE_MAFFT{
     publishDir(path: "${publish_dir}/mafft", mode: "symlink")
 
     input:
-       path(seqkit_aa)
+       tuple path(seqkit_fa), path(seqkit_aa)
 
     output:
-       path("${seqkit_aa}.cleaned"), emit: pre_mafft_ch
+       tuple path(seqkit_fa), path("${seqkit_aa}.cleaned"), emit: pre_mafft_ch
 
     script:
         """
@@ -22,10 +22,10 @@ process MAFFT{
     publishDir(path: "${publish_dir}/mafft", mode: "symlink")
 
     input:
-        path(pre_mafft_aa)
+        tuple path(pre_mafft_fa), path(pre_mafft_aa)
         
     output:
-        path("${pre_mafft_aa}.mafft"), emit: mafft_ch
+        tuple path(pre_mafft_fa), path("${pre_mafft_aa}.mafft"), emit: mafft_ch
 
     script:
         """

@@ -15,6 +15,9 @@ include { ORTHOFINDER ; ORTHOFINDER_FINDER  } from "./modules/orthofinder.nf"
 include { SEQKIT                            } from "./modules/seqkit.nf"
 include { PRE_MAFFT ; MAFFT                 } from "./modules/mafft.nf"
 include { TRANSLATORX                       } from "./modules/translatorx.nf"
+include { TRIMAL                            } from "./modules/trimal.nf"
+include { REMOVE_THIRDS                     } from "./modules/remove_thirds.nf"
+include { IQTREE                            } from "./modules/iqtree.nf"
 
 workflow {
     ch_input = file(params.input)
@@ -67,14 +70,17 @@ workflow {
     ORTHOFINDER_FINDER(ORTHOFINDER.out.orthofinder_ch, params.threshold_val, AUGUSTUS_PROT.out.codingseq_ch.collect())
 
     SEQKIT(ORTHOFINDER_FINDER.out.off_ch.flatten())
-    
-    PRE_MAFFT(SEQKIT.out.seqkit_ch.flatten())
-    MAFFT(PRE_MAFFT.out.pre_mafft_ch.flatten())
 
-    ortho_id = MAFFT.out.mafft_ch.flatten().filter(/OG.*)
-  
-    ortho_id.view()
+    PRE_MAFFT(SEQKIT.out.seqkit_ch)
+    MAFFT(PRE_MAFFT.out.pre_mafft_ch)
 
-    // TRANSLATORX(ORTHOFINDER_FINDER.out.off_ch.flatten(),MAFFT.out.mafft_ch.flatten())
+    TRANSLATORX(MAFFT.out.mafft_ch)
+ 
+    TRIMAL(TRANSLATORX.out.translatorx_ch.flatten(), params.masking_threshold)
+
+    REMOVE_THIRDS(TRIMAL.out.trimal_ch.flatten())
+
+    IQTREE(REMOVE_THIRDS.out.remove_thirds_ch.collect())
+
 }
 

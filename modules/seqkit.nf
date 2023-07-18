@@ -8,7 +8,7 @@ process SEQKIT {
     path(ortho_id)
 
   output:
-    path("*.aa"), emit: seqkit_ch
+    tuple path(ortho_id), path("*.aa"), emit: seqkit_ch
         
   script:
     """
