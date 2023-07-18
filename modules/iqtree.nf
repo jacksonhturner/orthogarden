@@ -5,14 +5,22 @@ process IQTREE {
    publishDir(path: "${publish_dir}/iqtree", mode: "symlink")   
 
    input:
-      path(alignments_for_tree)
+      path(thirds_removed)
 
    output:
-      path("${alignments_for_tree}.*"), emit: iqtree_ch
+      path("*"), emit: iqtree_ch
 
    script:
        """
-       iqtree2 -p ${alignments_for_tree} -m MFP+MERGE -B 1000 -rcluster 10 -bnni -nt ${task.cpus}
+       mkdir run_iqtree
+       mv *.no3rds run_iqtree
+
+       iqtree2 -p run_iqtree \
+       -m MFP+MERGE \
+       -B 1000 \
+       -rcluster 10 \
+       -bnni \
+       -nt ${task.cpus}
        """
 
 }

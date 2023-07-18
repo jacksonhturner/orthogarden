@@ -1,6 +1,5 @@
 process REMOVE_THIRDS {
-   label 'pandas'
-   label 'big_mem'
+   label 'sup_mem'
 
    publishDir(path: "${publish_dir}/remove_thirds", mode: "symlink")
 
