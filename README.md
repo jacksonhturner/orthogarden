@@ -13,6 +13,7 @@
   - also consider files that performed poorly with/without trimming
   - also consider running Marcin's files again to confirm output
   - also consider running Axel's beetles
+- [ ] implement recovery step after assembly
 
 
 ## abstract goals:
