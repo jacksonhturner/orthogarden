@@ -10,13 +10,13 @@ process MASURCA_CONFIG {
 
     script:
         """
-        masurca_config.py ${r1} ${r2} ${id} ${task.cpus}
+        masurca_config.py "${r1}" "${r2}" "${id}" ${task.cpus}
         """
 }
 
 process MASURCA_ASSEMBLE {
     label "masurca"
-    label "big_mem"
+    label "sup_mem"
 
     publishDir(path: "${publish_dir}/masurca", mode: "symlink")
 
