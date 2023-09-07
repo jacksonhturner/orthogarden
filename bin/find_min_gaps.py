@@ -1,48 +1,29 @@
-import sys
+#!/usr/bin/env python
 
-def read_fasta_file(filename):
-    sequences = {}
-    current_header = None
-    with open(filename, 'r') as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith('>'):
-                current_header = line[1:]
-                sequences[current_header] = ''
-            else:
-                sequences[current_header] += line
-    return sequences
+if __name__ == "__main__":
+    import sys
+    
+    if len(sys.argv) < 2:
+        print('USAGE: python nwk2mat.py TREE.nwk')
+        sys.exit(1)
+    
+    import pandas as pd
+    import itertools
+    from Bio import Phylo
 
-def find_sequence_with_least_dashes(sequences):
-    min_dashes = float('inf')
-    selected_sequence = None
-    for header, sequence in sequences.items():
-        num_dashes = sequence.count('-')
-        if num_dashes < min_dashes:
-            min_dashes = num_dashes
-            selected_sequence = sequence
-    return selected_sequence
+    ifile = sys.argv[1]
+    
+    t = Phylo.read(ifile, 'newick')
 
-def write_sequence_to_file(sequence, input_filename, output_filename):
-    with open(output_filename, 'w') as f:
-        f.write(">")
-        f.write(input_filename.rsplit('.', 1)[0])
-        f.write("\n")
-        f.write(sequence)
+    d = {}
+    for x, y in itertools.combinations(t.get_terminals(), 2):
+        v = t.distance(x, y)
+        d[x.name] = d.get(x.name, {})
+        d[x.name][y.name] = v
+        d[y.name] = d.get(y.name, {})
+        d[y.name][x.name] = v
+    for x in t.get_terminals():
+        d[x.name][x.name] = 0
 
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print("Usage: python script.py input.fasta output.fasta")
-    else:
-        input_filename = sys.argv[1]
-        output_filename = sys.argv[2]
-
-        sequences = read_fasta_file(input_filename)
-        selected_sequence = find_sequence_with_least_dashes(sequences)
-
-        if selected_sequence:
-            write_sequence_to_file(selected_sequence, input_filename, output_filename)
-            print("The sequence with the least amount of gaps was written to:", output_filename)
-        else:
-            print("Either there were no sequences found in the input file or all sequences contain gaps.")
-
+    m = pd.DataFrame(d)
+    m.to_csv(sys.stdout, sep='\t')
