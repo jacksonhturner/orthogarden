@@ -87,3 +87,4 @@ if (!params.retain_third_pos) {
     } else {
         IQTREE_WITH_THIRDS(TRIMAL.out.trimal_ch.collect())
 }
+}
