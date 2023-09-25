@@ -1,6 +1,6 @@
 process FASTQC {
     label 'fastqc'
-    label 'lil_mem'
+    label 'big_mem'
 
     publishDir(path: "${publish_dir}/qc/${outdir_name}", mode: "copy")
 

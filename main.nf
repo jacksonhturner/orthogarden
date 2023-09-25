@@ -60,13 +60,13 @@ workflow {
         ch_reads_pre_assembly = ch_reads_pre_kraken
     }
 
-    // MASURCA_CONFIG(ch_reads_pre_assembly)
-    // MASURCA_ASSEMBLE(MASURCA_CONFIG.out.masurca_config)
+    MASURCA_CONFIG(ch_reads_pre_assembly)
+    MASURCA_ASSEMBLE(MASURCA_CONFIG.out.masurca_config)
 
-    VELVET(ch_reads_pre_assembly)
+    // VELVET(ch_reads_pre_assembly)
 
     AUGUSTUS_FASTA(ch_fasta, params.augustus_ref)
-    AUGUSTUS_READS(VELVET.out.velvet_ch, params.augustus_ref)
+    AUGUSTUS_READS(MASURCA_ASSEMBLE.out.masurca_ch, params.augustus_ref)
     AUGUSTUS_PROT(AUGUSTUS_FASTA.out.augustus_ch.concat(AUGUSTUS_READS.out.augustus_ch))
 
     ORTHOFINDER(AUGUSTUS_PROT.out.aa_ch.collect())

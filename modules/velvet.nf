@@ -1,6 +1,6 @@
 process VELVET {
     label 'velvet'
-    label 'super_mem'
+    label 'sup_mem'
 
     publishDir(path: "${publish_dir}/velvet/", mode: "symlink")
 
