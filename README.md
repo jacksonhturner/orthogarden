@@ -1,5 +1,20 @@
 # orthogarden
 
+## installation and requirements
+
+## usage
+
+To use orthogarden, you'll need to provide a comma-separated (csv) metadata file that contains *either* paired-end sequences or assembled reference genomes.
+
+The formatting must match the following, including header:
+```
+id,r1,r2,ref
+taxonA,/path/to/forward.fastq,/path/to/reverse.fastq,
+taxonB,/path/to/forward.fastq/path/to/reverse.fastq,
+taxonC,,,reference.fna
+```
+
+
 ## todo:
 - [x] create main.nf
 - [x] create nextflow.config
@@ -57,6 +72,6 @@
 - change tip labels
 
 
-## stetch goal:
+## stretch goal:
 - allow a pre-made augustus training model (fire, directory)
 - create better orthologs from poor assemblies using nearest neighbors from final phylogeny
