@@ -19,6 +19,8 @@ taxonC,,,reference.fna
 - [x] create main.nf
 - [x] create nextflow.config
 - [x] start a few modules
+- [ ] add support for single-end reads
+- [ ] create entry point for viral dna/individual genes from sequencing
 - [ ] create configs (dir) with local and slurm
 - [x] determine the best container for each tool
   - prioritize quay.io most of the time
