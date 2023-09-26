@@ -1,5 +1,6 @@
 process PARSE_METADATA {
     label 'pandas'
+    label 'lil_mem'
 
     publishDir "${publish_dir}/design", mode: 'copy'
 

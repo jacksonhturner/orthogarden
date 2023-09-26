@@ -1,6 +1,6 @@
 process AUGUSTUS {
     label "augustus"
-    // label "med_mem"
+    label "med_mem"
 
     // publishDir(path: "${publish_dir}/augustus/gff", mode: "symlink")
 
@@ -19,6 +19,7 @@ process AUGUSTUS {
 
 process AUGUSTUS_PROT {
     label "augustus"
+    label "med_mem"
 
     publishDir(path: "${publish_dir}/augustus/sequences", mode: "symlink")
 

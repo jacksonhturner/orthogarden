@@ -21,6 +21,7 @@ process ORTHOFINDER {
 
 process ORTHOFINDER_FINDER {
     label "pandas"
+    label "med_mem"
 
     publishDir(path: "${publish_dir}/orthofinder_finder/", mode: "symlink")
 
