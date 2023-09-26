@@ -21,33 +21,28 @@ taxonC,,,reference.fna
 - [x] start a few modules
 - [ ] add support for single-end reads
 - [ ] create entry point for viral dna/individual genes from sequencing
-- [ ] create configs (dir) with local and slurm
+- [x] create configs (dir) with local and slurm
 - [x] determine the best container for each tool
-  - prioritize quay.io most of the time
-  - biocontainers as well
-  - dockerhub is also good
-- [ ] determine 4 or so smaller files to test the pipeline
-  - also consider files that performed poorly with/without trimming
-  - also consider running Marcin's files again to confirm output
-  - also consider running Axel's beetles
 - [ ] implement recovery step after assembly
 
 
 ## abstract goals:
-- name pipeline (orthogarden)
-- include config for slurm 
-- assume singularity for all tools
 - formatting of metadata (tip-labels)
-    assume only fastq?
 - allow a way to add specimen?
+- assume singularity for all tools
+  - prioritize quay.io most of the time
+  - biocontainers as well
+  - dockerhub is also good
 
 
 ## parameters:
-- metadata file
-- augustus training species
-- profiles
-  - local
-  - slurm
+- metadata file (--input)
+- augustus training species (--augustus_ref)
+- single-copy gene frequency (--threshold_val)
+- trimal masking threshold (--masking_threshold)
+- profile
+  - local & (four|eight|sixteen|thirty_two)
+  - slurm & (campus|bigmem)
 
 
 ## steps:
