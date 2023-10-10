@@ -4,7 +4,7 @@ import sys
 
 
 '''
-sys.argv[1] is a directory containing only fasta (pe or se) and fasta files
+sys.argv[1] is a directory containing only fastq (pe or se) and fasta files
 '''
 
 
