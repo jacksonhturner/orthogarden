@@ -11,8 +11,8 @@ process PRE_MAFFT{
 
     script:
         """
-	python_replace.py ${seqkit_aa} '*' N ${seqkit_aa}.cleaned
-	"""
+	    python_replace.py ${seqkit_aa} '*' N ${seqkit_aa}.cleaned
+	    """
 }
 
 process MAFFT{

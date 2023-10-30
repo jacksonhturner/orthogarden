@@ -29,20 +29,23 @@ process ORTHOFINDER_FINDER {
         path(orthofinder_dir)
         val(threshold_val)
         path(codingseq_ch)
+        path(aa_ch)
 
     output:
-        path("off_narrowed_${threshold_val}/*.fa"), emit: off_ch
+        path("off_narrowed_${threshold_val}/*.faa"), emit: protein_ch
+        path("off_narrowed_${threshold_val}/*.fna"), emit: codingseq_ch
 
     script:
         """
         mkdir off_narrowed_${threshold_val}
-        mkdir codingseqs
-        mv *.codingseq codingseqs
+        mkdir sequences
+        mv *.codingseq sequences
+        mv *.faa sequences
 
         orthofinder_finder.py \
           ${orthofinder_dir} \
           ${threshold_val} \
-          codingseqs \
+          sequences \
           off_narrowed_${threshold_val}
         """
 }

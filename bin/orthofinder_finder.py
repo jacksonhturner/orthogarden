@@ -14,7 +14,7 @@ note: naming prefix must be identical between augustus codingseq files
 input:
 sys.argv[1] : results directory of OrthoFinder
 sys.argv[2] : percent (0 < x < 1) of taxa with single copies per group
-sys.argv[3] : directory with augustus files ending in "codingseq"
+sys.argv[3] : directory with augustus files ending in "codingseq" and "faa"
 sys.argv[4] : output directory
 
 overview:
@@ -141,10 +141,12 @@ def search_codingseqs(taxon, group_dt):
     iterate the fasta sequences looking for the sequences in group_dt
     '''
     with open(os.path.join(sys.argv[3], f'{taxon}.codingseq')) as f:
-        parse_fasta(f, group_dt, taxon)
+        parse_codingseq(f, group_dt, taxon)
+    with open(os.path.join(sys.argv[3], f'{taxon}.faa')) as f:
+        parse_faa(f, group_dt, taxon)
 
 
-def parse_fasta(f, group_dt, taxon):
+def parse_codingseq(f, group_dt, taxon):
     '''
     iterate lines of open fasta file
     if header, check if the header info is in group_dt values
@@ -153,9 +155,8 @@ def parse_fasta(f, group_dt, taxon):
     for line in f:
         if line.startswith(">"):
             if seq:
-                write_to_orthogroup(taxon, seq, group)
+                write_to_orthogroup(taxon, seq, group, "fna")
             seq = ''
-            #line = '.'.join(line.rstrip().split('.')[1:])
             line = '.'.join(line.rstrip().split('.')[-2:])
             if not line.startswith('g'):
                 sys.exit('unexpected formatting from Augustus output')
@@ -169,11 +170,39 @@ def parse_fasta(f, group_dt, taxon):
         else:
             continue
     if seq:
-        write_to_orthogroup(taxon, seq, group)
+        write_to_orthogroup(taxon, seq, group, "fna")
 
 
-def write_to_orthogroup(taxon, seq, group):
-    with open(os.path.join(sys.argv[4], f'{group}.fa'), 'a') as o:
+def parse_faa(f, group_dt, taxon):
+    '''
+    iterate lines of open fasta file
+    if header, check if the header info is in group_dt values
+    '''
+    seq = ''
+    for line in f:
+        if line.startswith(">"):
+            if seq:
+                write_to_orthogroup(taxon, seq, group, "faa")
+            seq = ''
+            line = line.rstrip()[1:]
+            if not line.startswith('g'):
+                sys.exit('unexpected formatting from Augustus output')
+            if line in group_dt:
+                add_to_seq = True
+                group = group_dt[line]
+            else:
+                add_to_seq = False
+        elif add_to_seq:
+            seq += line.rstrip()
+        else:
+            continue
+
+    if seq:
+        write_to_orthogroup(taxon, seq, group, "faa")
+
+
+def write_to_orthogroup(taxon, seq, group, suffix):
+    with open(os.path.join(sys.argv[4], f'{group}.{suffix}'), 'a') as o:
         o.write(f'>{taxon}\n')
         o.write(f'{seq}\n')
 

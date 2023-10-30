@@ -19,6 +19,7 @@ include { TRANSLATORX                       } from "./modules/translatorx.nf"
 include { TRIMAL                            } from "./modules/trimal.nf"
 include { REMOVE_THIRDS                     } from "./modules/remove_thirds.nf"
 include { IQTREE ; IQTREE_WITH_THIRDS       } from "./modules/iqtree.nf"
+include { FIX_FRAMES                        } from "./modules/seq_utils.nf"
 
 workflow {
     ch_input = file(params.input)
@@ -60,19 +61,27 @@ workflow {
         ch_reads_pre_assembly = ch_reads_pre_kraken
     }
 
+    // ASSEMBLE READS
     MASURCA_CONFIG(ch_reads_pre_assembly)
     MASURCA_ASSEMBLE(MASURCA_CONFIG.out.masurca_config)
 
     // VELVET(ch_reads_pre_assembly)
 
+    // GENE PREDICTION
     AUGUSTUS_FASTA(ch_fasta, params.augustus_ref)
     AUGUSTUS_READS(MASURCA_ASSEMBLE.out.masurca_ch, params.augustus_ref)
     AUGUSTUS_PROT(AUGUSTUS_FASTA.out.augustus_ch.concat(AUGUSTUS_READS.out.augustus_ch))
 
+    // ORTHOLOGOUS GENE ANNOTATION 
     ORTHOFINDER(AUGUSTUS_PROT.out.aa_ch.collect())
-    ORTHOFINDER_FINDER(ORTHOFINDER.out.orthofinder_ch, params.threshold_val, AUGUSTUS_PROT.out.codingseq_ch.collect())
+    ORTHOFINDER_FINDER(ORTHOFINDER.out.orthofinder_ch,
+                       params.threshold_val,
+                       AUGUSTUS_PROT.out.codingseq_ch.collect(),
+                       AUGUSTUS_PROT.out.aa_ch.collect())
+    FIX_FRAMES(ORTHOFINDER_FINDER.out.protein_ch.collect(),
+               ORTHOFINDER_FINDER.out.codingseq_ch.collect())
 
-    SEQKIT(ORTHOFINDER_FINDER.out.off_ch.flatten())
+    SEQKIT(FIX_FRAMES.out.fixed_ch.flatten())
 
     PRE_MAFFT(SEQKIT.out.seqkit_ch)
     MAFFT(PRE_MAFFT.out.pre_mafft_ch)
