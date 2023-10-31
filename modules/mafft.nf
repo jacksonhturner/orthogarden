@@ -1,4 +1,5 @@
 process PRE_MAFFT{
+    label 'pandas'
     label 'lil_mem'
     
     publishDir(path: "${publish_dir}/mafft", mode: "symlink")

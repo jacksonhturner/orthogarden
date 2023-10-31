@@ -1,4 +1,5 @@
 process FIND_MIN_GAPS {
+    label 'pandas'
 	label 'big_mem'
 
 	publishDir(path: "${publish_dir}/find_min_gaps", mode: "symlink")
@@ -11,6 +12,6 @@ process FIND_MIN_GAPS {
 
 	script:
 	   '''
-	   python3 find_min_gaps.py ${mafft} ${mafft}.longest
+	   find_min_gaps.py ${mafft} ${mafft}.longest
 	   '''
 }
