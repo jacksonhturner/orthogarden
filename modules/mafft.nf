@@ -5,14 +5,16 @@ process PRE_MAFFT{
     publishDir(path: "${publish_dir}/mafft", mode: "symlink")
 
     input:
-       tuple path(seqkit_fa), path(seqkit_aa)
+       path(seqkit_aa)
 
     output:
-       tuple path(seqkit_fa), path("${seqkit_aa}.cleaned"), emit: pre_mafft_ch
+       path("*.cleaned"), emit: pre_mafft_ch
 
     script:
         """
-	    python_replace.py ${seqkit_aa} '*' N ${seqkit_aa}.cleaned
+        for prot in *aa; do
+	        python_replace.py \${prot} '*' N \${prot}.cleaned
+        done
 	    """
 }
 
@@ -23,8 +25,28 @@ process MAFFT{
     publishDir(path: "${publish_dir}/mafft", mode: "symlink")
 
     input:
+        path(augustus_aa)
+
+    output:
+        path("*.mafft"), emit: mafft_ch
+
+    script:
+        """
+        for prot in ./*aa ; do
+            nwnsi \${prot} > \${prot}.mafft
+        done
+        """
+}
+
+process OLD_MAFFT{
+    label 'mafft'
+    label 'big_mem'
+    
+    publishDir(path: "${publish_dir}/mafft", mode: "symlink")
+
+    input:
         tuple path(pre_mafft_fa), path(pre_mafft_aa)
-        
+
     output:
         tuple path(pre_mafft_fa), path("${pre_mafft_aa}.mafft"), emit: mafft_ch
 

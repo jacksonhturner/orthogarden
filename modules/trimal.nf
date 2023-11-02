@@ -9,10 +9,12 @@ process TRIMAL{
       val(masking_threshold)
 
     output:
-        path("${translatorx}.masked"), emit: trimal_ch
+        path("*.masked"), emit: trimal_ch
 
     script:
         """
-        trimal -in ${translatorx} -out ${translatorx}.masked -gt ${masking_threshold}
+        for seq in *fasta ; do
+            trimal -in \${seq} -out \${seq}.masked -gt ${masking_threshold}
+        done
         """
 }

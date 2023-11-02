@@ -1,4 +1,3 @@
-
 process FIX_FRAMES {
     label 'pandas'
     label 'lil_mem'
@@ -14,8 +13,30 @@ process FIX_FRAMES {
 
     script:
         """
-        frame_check.py \
-            ${proteins}
-            ${codingseqs}
+        for prot in *.faa ; do
+            frame_check.py \
+                \$prot \
+                \${prot%%faa}fna
+        done
+        """
+}
+
+process REMOVE_THIRDS {
+    label "pandas"
+    label "lil_mem"
+
+    publishDir(path: "${publish_dir}/remove_thirds", mode: "symlink")
+
+    input: 
+        path(trimal)
+
+    output:
+        path("*.no3rds"), emit: remove_thirds_ch
+
+    script:
+        """
+        for trimal in *.masked ; do
+            pull_third_pos.py \${trimal} \${trimal}.no3rds
+        done
         """
 }
