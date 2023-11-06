@@ -3,6 +3,12 @@ import os
 import sys
 
 
+'''
+sys.argv[1] is faa file
+sys.argv[2] is fna file
+'''
+
+
 aa_dt = {"ATT" : "I",
          "ATC" : "I",
          "ATA" : "I",
@@ -87,12 +93,16 @@ def find_frame(codingseq, prot):
     a, b, c = "", "", ""
     for pos, base in enumerate(codingseq[:-2]):
         frame = codingseq[pos:pos+3]
+        try:
+            aa = aa_dt[frame]
+        except KeyError:
+            aa = "X"
         if pos%3 == 0:
-            a += aa_dt[frame]
+            a += aa
         if pos%3 == 1:
-            b += aa_dt[frame]
+            b += aa
         if pos%3 == 2:
-            c += aa_dt[frame]
+            c += aa
 
     if prot in a:
         return codingseq[:len(prot)*3]
