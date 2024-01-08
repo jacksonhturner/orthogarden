@@ -9,6 +9,7 @@ include { MULTIQC as MULTIQC_TRIM           } from "./modules/multiqc.nf"
 include { KRAKEN2                           } from "./modules/kraken2.nf"
 include { MASURCA_CONFIG ; MASURCA_ASSEMBLE } from "./modules/masurca.nf"
 include { VELVET                            } from "./modules/velvet.nf"
+include { MEGAHIT                           } from "./modules/megahit.nf"
 include { AUGUSTUS as AUGUSTUS_FASTA        } from "./modules/augustus.nf"
 include { AUGUSTUS as AUGUSTUS_READS        } from "./modules/augustus.nf"
 include { AUGUSTUS_PROT                     } from "./modules/augustus.nf"
@@ -84,8 +85,10 @@ workflow {
     --------------
     */
 
-    MASURCA_CONFIG(ch_reads_pre_assembly)
-    MASURCA_ASSEMBLE(MASURCA_CONFIG.out.masurca_config)
+    MEGAHIT(ch_reads_pre_assembly)
+
+    // MASURCA_CONFIG(ch_reads_pre_assembly)
+    // MASURCA_ASSEMBLE(MASURCA_CONFIG.out.masurca_config)
 
     // VELVET(ch_reads_pre_assembly)
 
@@ -96,7 +99,7 @@ workflow {
     */
 
     AUGUSTUS_FASTA(ch_fasta, params.augustus_ref)
-    AUGUSTUS_READS(MASURCA_ASSEMBLE.out.masurca_ch, params.augustus_ref)
+    AUGUSTUS_READS(MEGAHIT.out.megahit_ch, params.augustus_ref)
     AUGUSTUS_PROT(AUGUSTUS_FASTA.out.augustus_ch.concat(AUGUSTUS_READS.out.augustus_ch))
 
     /*
