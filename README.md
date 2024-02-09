@@ -3,6 +3,7 @@
 ## description
 
 ## table of contents
+copy readsynth table of contents
 
 ## usage
 
