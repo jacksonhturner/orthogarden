@@ -1,8 +1,26 @@
 # orthogarden
 
-## installation and requirements
+## description
+
+## table of contents
 
 ## usage
+
+Here's the wiki: doesn't exist yet
+
+## installation & dependencies
+
+## quick start w/ practice dataset
+
+Include test dataset and a quick run of the pipeine
+
+## accessing & interpreting output
+
+## troubleshooting
+
+
+
+### current readme
 
 To use orthogarden, you'll need to provide a comma-separated (csv) metadata file that contains *either* paired-end sequences or assembled reference genomes.
 
