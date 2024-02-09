@@ -20,7 +20,7 @@ Include test dataset and a quick run of the pipeine
 
 
 
-### current readme
+# current readme
 
 To use orthogarden, you'll need to provide a comma-separated (csv) metadata file that contains *either* paired-end sequences or assembled reference genomes.
 
