@@ -12,6 +12,6 @@ process MEGAHIT {
 
     script:
        """
-       megahit -1 ${r1} -2 ${r2} -t 15 -o megahit_result
+       megahit -1 ${r1} -2 ${r2} -t ${task.cpus} -o megahit_result
        """
 }
