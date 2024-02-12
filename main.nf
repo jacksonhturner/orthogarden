@@ -48,10 +48,10 @@ workflow {
     -------------------------
     */
 
-    if (!params.skip_qc) {
+    // if (!params.skip_qc) {
         FASTQC_RAW(ch_reads_raw, "raw")
         MULTIQC_RAW(FASTQC_RAW.out.fastq_ch.collect(), "raw")
-    }
+    // }
 
     if (!params.skip_trim) {
         CUTADAPT_ADAPTERS(ch_reads_raw, params.r1_adapter, params.r2_adapter, params.minimum_length)
@@ -62,9 +62,9 @@ workflow {
             MULTIQC_TRIM(FASTQC_TRIM.out.fastq_ch.collect(), "trimmed")
         }
 
-    } else {
-        ch_reads_pre_kraken = ch_reads_raw
-    }
+     } else {
+         ch_reads_pre_kraken = ch_reads_raw
+     }
 
     /*
     -----------------------
@@ -72,12 +72,12 @@ workflow {
     -----------------------
     */
 
-    if (!params.skip_kraken) {
+    // if (!params.skip_kraken) {
         KRAKEN2(ch_reads_pre_kraken, params.kraken_db)
         ch_reads_pre_assembly = KRAKEN2.out.reads
-    } else {
-        ch_reads_pre_assembly = ch_reads_pre_kraken
-    }
+    // } else {
+    //     ch_reads_pre_assembly = ch_reads_pre_kraken
+    // }
 
     /*
     --------------
