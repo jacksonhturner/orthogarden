@@ -9,7 +9,7 @@ copy readsynth table of contents
 
 ## usage
 
-Here's the wiki: doesn't exist yet
+[Orthogarden Wiki](https://github.com/jacksonhturner/orthogarden/wiki)
 
 ## installation & dependencies
 
