@@ -35,6 +35,8 @@ taxonB,/path/to/forward.fastq/path/to/reverse.fastq,
 taxonC,,,reference.fna
 ```
 
+# pipeline steps
+![workflow](assets/2024-02-12_20-24_dag.png)
 
 ## todo:
 - [x] create main.nf
