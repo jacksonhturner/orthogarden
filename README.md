@@ -18,14 +18,15 @@ Orthogarden is a nextflow pipeline designed to leverage any combination of short
 
 ## usage
 
-For full documentation on using orthogarden
-[Orthogarden Wiki](https://github.com/jacksonhturner/orthogarden/wiki)
+For full documentation on using orthogarden, please see the [Orthogarden Wiki](https://github.com/jacksonhturner/orthogarden/wiki).
 
 ## requirements
 
 ## quick start
 
 Include test dataset and a quick run of the pipeine
+
+<link to input format wiki>
 
 ## accessing and interpreting output
 
@@ -38,15 +39,6 @@ Include test dataset and a quick run of the pipeine
 
 # current readme
 
-To use orthogarden, you'll need to provide a comma-separated (csv) metadata file that contains *either* paired-end sequences or assembled reference genomes.
-
-The formatting must match the following, including header:
-```
-id,r1,r2,ref
-taxonA,/path/to/forward.fastq,/path/to/reverse.fastq,
-taxonB,/path/to/forward.fastq/path/to/reverse.fastq,
-taxonC,,,reference.fna
-```
 
 # pipeline steps
 ![workflow](assets/2024-02-12_20-24_dag.png)
@@ -55,7 +47,6 @@ taxonC,,,reference.fna
 - [x] create main.nf
 - [x] create nextflow.config
 - [x] start a few modules
-- [ ] add support for single-end reads
 - [ ] create entry point for viral dna/individual genes from sequencing
 - [x] create configs (dir) with local and slurm
 - [x] determine the best container for each tool
