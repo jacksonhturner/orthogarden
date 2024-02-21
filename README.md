@@ -1,8 +1,10 @@
-# Orthogarden
+# Orthogarden :seedling:
 
-<a super brief description of what it does. (~2 sentences)>
-<inputs>
-<outputs>
+logo
+
+a super brief description of what it does. (~2 sentences)  
+inputs  
+outputs  
 
 ## contents
 - [overview](#overview)
