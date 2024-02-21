@@ -34,68 +34,13 @@ Include test dataset and a quick run of the pipeine
 
 <a href="https://github.com/jacksonhturner/orthogarden/blob/master/LICENSE">MIT license</a>
 
-
-
-
-# current readme
-
-
 # pipeline steps
 ![workflow](assets/2024-02-12_20-24_dag.png)
 
-## todo:
-- [x] create main.nf
-- [x] create nextflow.config
-- [x] start a few modules
+## todo and stretch goals:
 - [ ] create entry point for viral dna/individual genes from sequencing
-- [x] create configs (dir) with local and slurm
-- [x] determine the best container for each tool
 - [ ] implement recovery step after assembly
-
-
-## abstract goals:
+- allow a pre-made augustus training model (file, directory)
+- create better orthologs from poor assemblies using nearest neighbors from final phylogeny
 - formatting of metadata (tip-labels)
 - allow a way to add specimen?
-- assume singularity for all tools
-  - prioritize quay.io most of the time
-  - biocontainers as well
-  - dockerhub is also good
-
-
-## parameters:
-- metadata file (--input)
-- augustus training species (--augustus_ref)
-- single-copy gene frequency (--threshold_val)
-- trimal masking threshold (--masking_threshold)
-- profile
-  - local & (four|eight|sixteen|thirty_two)
-  - slurm & (campus|bigmem)
-
-
-## steps:
-- parse metadate (split fastq and fasta into two channels)
-  - check if files are compressed (consider if this matters for entry point)
-- trimming
-- kraken2
-- masurca
-- augustus <<< entry point if no fastq
-- augustus convert to codingseqs/aa (getAnnoFasta)
-- [ collect all genomes here ]
-- orthofinder <<< bottleneck, all samples must collect here
-- orthofinder_finder (determine what cutoff to use automatically?)
-  - consider a range of values
-  - create a decision rule
-    - desired number genes?
-    - elbow approach?
-- translate to protein
-- align protein sequences to each other (pasta)
-- map coding to amino acids
-- mask
-- remove thirds
-- run iqtree
-- change tip labels
-
-
-## stretch goal:
-- allow a pre-made augustus training model (fire, directory)
-- create better orthologs from poor assemblies using nearest neighbors from final phylogeny
