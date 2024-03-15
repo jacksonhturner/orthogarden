@@ -1,6 +1,6 @@
 process MEGAHIT {
     label 'megahit'
-    label 'sup_mem'
+    label 'big_mem'
 
     publishDir(path: "${publish_dir}/megahit/", mode: "symlink")
 

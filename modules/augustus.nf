@@ -19,7 +19,7 @@ process AUGUSTUS {
 
 process AUGUSTUS_PROT {
     label "augustus"
-    label "med_mem"
+    label "lil_mem"
 
     publishDir(path: "${publish_dir}/augustus/sequences", mode: "symlink")
 

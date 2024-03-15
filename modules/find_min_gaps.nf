@@ -1,6 +1,6 @@
 process FIND_MIN_GAPS {
     label 'pandas'
-	label 'big_mem'
+	label 'lil_mem'
 
 	publishDir(path: "${publish_dir}/find_min_gaps", mode: "symlink")
 

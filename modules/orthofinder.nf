@@ -1,6 +1,6 @@
 process ORTHOFINDER {
     label "orthofinder"
-    label "big_mem"
+    label "big_time"
 
     publishDir(path: "${publish_dir}/orthofinder/", mode: "symlink")
 
@@ -12,7 +12,7 @@ process ORTHOFINDER {
         
     script:
         """
-        ulimit -n 10000
+        ulimit -n 1000000
         orthofinder \
           -t ${task.cpus} \
           -f .
@@ -21,7 +21,7 @@ process ORTHOFINDER {
 
 process ORTHOFINDER_FINDER {
     label "pandas"
-    label "med_mem"
+    label "lil_mem"
 
     publishDir(path: "${publish_dir}/orthofinder_finder/", mode: "symlink")
 
