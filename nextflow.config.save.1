@@ -1,0 +1,54 @@
+params {
+    project_title        = "project"
+    skip_qc              = true
+    skip_trim            = true
+    skip_trim_qc         = true
+    r1_adapter           = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
+    r2_adapter           = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"
+    minimum_length       = 30
+    skip_kraken          = true
+    retain_third_pos     = false
+    masking_threshold    = 0.4
+    buffer_n             = 500
+}
+
+includeConfig "conf/containers.config"
+
+profiles {
+
+    slurm {
+        includeConfig "conf/slurm.config"
+        workDir = "${params.publish_dir}/${params.project_title}/work/"
+
+        singularity {
+            enabled = true
+            cacheDir = "${HOME}/singularity/"
+            autoMounts = true
+        }
+
+        process {
+            publish_dir = "${params.publish_dir}/${params.project_title}/publish/"
+            executor = 'slurm'
+        }
+        includeConfig "conf/reporting.config"
+    }
+
+    local {
+        // create default for publish_dir if not input
+        includeConfig "conf/local.config"
+        workDir = "${params.publish_dir}/${params.project_title}/work/"
+
+        singularity {
+            enabled = true
+            cacheDir = "${HOME}/singularity/"
+            autoMounts = true
+        }
+
+        process {
+            publish_dir = "${params.publish_dir}/${params.project_title}/publish/"
+        }
+        includeConfig "conf/reporting.config"
+    }
+
+}
+
