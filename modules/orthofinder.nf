@@ -23,7 +23,7 @@ process ORTHOFINDER_FINDER {
     label "pandas"
     label "lil_mem"
 
-    publishDir(path: "${publish_dir}/orthofinder_finder/", mode: "symlink")
+    publishDir(path: "${publish_dir}/orthofinder_finder/", mode: "copy")
 
     input:
         path(orthofinder_dir)
