@@ -2,7 +2,7 @@ process TRIMAL{
     label 'trimal'
     label 'lil_mem'
 
-    publishDir(path: "${publish_dir}/trimal", mode: "symlink")
+    publishDir(path: "${publish_dir}/trimal", mode: "copy")
 
     input:
       path(translatorx)

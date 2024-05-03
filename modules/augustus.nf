@@ -2,7 +2,7 @@ process AUGUSTUS {
     label "augustus"
     label "med_mem"
 
-    // publishDir(path: "${publish_dir}/augustus/gff", mode: "symlink")
+    // publishDir(path: "${publish_dir}/augustus/gff", mode: "copy")
 
     input:
         tuple val(id), path(fasta)
@@ -19,9 +19,9 @@ process AUGUSTUS {
 
 process AUGUSTUS_PROT {
     label "augustus"
-    label "med_mem"
+    label "lil_mem"
 
-    publishDir(path: "${publish_dir}/augustus/sequences", mode: "symlink")
+    publishDir(path: "${publish_dir}/augustus/sequences", mode: "copy")
 
     input:
         tuple val(id), path(gff)

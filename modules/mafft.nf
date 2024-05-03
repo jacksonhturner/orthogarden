@@ -22,7 +22,7 @@ process MAFFT{
     label 'mafft'
     label 'big_mem'
     
-    publishDir(path: "${publish_dir}/mafft", mode: "symlink")
+    publishDir(path: "${publish_dir}/mafft", mode: "copy")
 
     input:
         path(augustus_aa)

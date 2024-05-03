@@ -7,8 +7,6 @@ include { FASTQC as FASTQC_TRIM             } from "./modules/fastqc.nf"
 include { MULTIQC as MULTIQC_RAW            } from "./modules/multiqc.nf"
 include { MULTIQC as MULTIQC_TRIM           } from "./modules/multiqc.nf"
 include { KRAKEN2                           } from "./modules/kraken2.nf"
-include { MASURCA_CONFIG ; MASURCA_ASSEMBLE } from "./modules/masurca.nf"
-include { VELVET                            } from "./modules/velvet.nf"
 include { MEGAHIT                           } from "./modules/megahit.nf"
 include { AUGUSTUS as AUGUSTUS_FASTA        } from "./modules/augustus.nf"
 include { AUGUSTUS as AUGUSTUS_READS        } from "./modules/augustus.nf"
@@ -49,16 +47,16 @@ workflow {
     -------------------------
     */
 
-    // if (!params.skip_qc) {
+    if (!params.skip_qc) {
         FASTQC_RAW(ch_reads_raw, "raw")
         MULTIQC_RAW(FASTQC_RAW.out.fastq_ch.collect(), "raw")
-    // }
+    }
 
     if (!params.skip_trim) {
         CUTADAPT_ADAPTERS(ch_reads_raw, params.r1_adapter, params.r2_adapter, params.minimum_length)
         ch_reads_pre_kraken = CUTADAPT_ADAPTERS.out.reads
 
-        if (!params.skip_trim_qc) {
+        if (!params.skip_qc) {
             FASTQC_TRIM(ch_reads_pre_kraken, "trimmed")
             MULTIQC_TRIM(FASTQC_TRIM.out.fastq_ch.collect(), "trimmed")
         }
@@ -73,12 +71,12 @@ workflow {
     -----------------------
     */
 
-    // if (!params.skip_kraken) {
+    if (params.kraken_db) {
         KRAKEN2(ch_reads_pre_kraken, params.kraken_db)
         ch_reads_pre_assembly = KRAKEN2.out.reads
-    // } else {
-    //     ch_reads_pre_assembly = ch_reads_pre_kraken
-    // }
+    } else {
+        ch_reads_pre_assembly = ch_reads_pre_kraken
+    }
 
     /*
     --------------
@@ -87,11 +85,6 @@ workflow {
     */
 
     MEGAHIT(ch_reads_pre_assembly)
-
-    // MASURCA_CONFIG(ch_reads_pre_assembly)
-    // MASURCA_ASSEMBLE(MASURCA_CONFIG.out.masurca_config)
-
-    // VELVET(ch_reads_pre_assembly)
 
     /*
     ---------------

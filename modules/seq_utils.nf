@@ -25,7 +25,7 @@ process REMOVE_THIRDS {
     label "pandas"
     label "lil_mem"
 
-    publishDir(path: "${publish_dir}/remove_thirds", mode: "symlink")
+    publishDir(path: "${publish_dir}/remove_thirds", mode: "copy")
 
     input: 
         path(trimal)

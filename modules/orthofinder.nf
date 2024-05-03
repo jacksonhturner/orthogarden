@@ -1,6 +1,6 @@
 process ORTHOFINDER {
     label "orthofinder"
-    label "big_mem"
+    label "big_time"
 
     publishDir(path: "${publish_dir}/orthofinder/", mode: "symlink")
 
@@ -21,9 +21,9 @@ process ORTHOFINDER {
 
 process ORTHOFINDER_FINDER {
     label "pandas"
-    label "med_mem"
+    label "lil_mem"
 
-    publishDir(path: "${publish_dir}/orthofinder_finder/", mode: "symlink")
+    publishDir(path: "${publish_dir}/orthofinder_finder/", mode: "copy")
 
     input:
         path(orthofinder_dir)
