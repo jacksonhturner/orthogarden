@@ -14,6 +14,7 @@ include { AUGUSTUS as AUGUSTUS_FASTA        } from "./modules/augustus.nf"
 include { AUGUSTUS as AUGUSTUS_READS        } from "./modules/augustus.nf"
 include { AUGUSTUS_PROT                     } from "./modules/augustus.nf"
 include { ORTHOFINDER ; ORTHOFINDER_FINDER  } from "./modules/orthofinder.nf"
+include { SUMMARY_TABLE                     } from "./modules/summary_table.nf"
 include { MAFFT                             } from "./modules/mafft.nf"
 include { TRANSLATORX                       } from "./modules/translatorx.nf"
 include { TRIMAL                            } from "./modules/trimal.nf"
@@ -115,6 +116,14 @@ workflow {
                        AUGUSTUS_PROT.out.aa_ch.collect())
     FIX_FRAMES(ORTHOFINDER_FINDER.out.protein_ch.collect(),
                ORTHOFINDER_FINDER.out.codingseq_ch.collect())
+
+    /*
+    ----------------------
+    SUMMARY TABLE CREATION
+    ----------------------
+    */
+
+    SUMMARY_TABLE(ORTHOFINDER_FINDER.out.protein_ch.flatten())
 
     /*
     --------------------------
