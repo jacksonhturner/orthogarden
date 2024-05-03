@@ -8,7 +8,8 @@ process SUMMARY_TABLE{
       path(orthofinder_finder)
 
     output:
-        path("*.masked"), emit: trimal_ch
+        path(summary_table_with_genes.csv), gene_table
+	path(summary_table_with_taxon.csv), taxon_table
 
     script:
         """
