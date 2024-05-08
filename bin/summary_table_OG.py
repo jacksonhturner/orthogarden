@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import gzip
 import pandas as pd
 import sys

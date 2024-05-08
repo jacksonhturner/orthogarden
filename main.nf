@@ -116,7 +116,7 @@ workflow {
     ----------------------
     */
 
-    SUMMARY_TABLE(ORTHOFINDER_FINDER.out.protein_ch.flatten())
+    SUMMARY_TABLE(ORTHOFINDER_FINDER.out.protein_ch)
 
     /*
     --------------------------
