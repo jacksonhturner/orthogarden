@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import gzip
 import pandas as pd
 import sys
@@ -20,6 +19,7 @@ def main():
 	df = pd.read_csv(csv_in, sep="\t", header=None)
 	df = pd.DataFrame(df)
 	df = df.fillna(0)
+	df = df.drop(df.columns[[1]], axis=1)
 	df = df.iloc[:, 1:]
 	col_names = df.iloc[0]
 	#row_names = df.iloc[:, 0]

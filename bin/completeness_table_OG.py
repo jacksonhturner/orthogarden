@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import sys
 import os
 import pandas as pd
@@ -18,7 +16,6 @@ usage: python3 completeness_table_OG.python directory output.csv
 
 def main():
 	seq_path = os.path.abspath(sys.argv[1])
-	print (seq_path)
 	key_list = []
 	for file in os.listdir(seq_path):
 		current_path = seq_path + "/" + file
@@ -48,11 +45,23 @@ def main():
 			newnew_row = []
 			newnew_row.append(file_name)
 			newnew_row.extend(num_row2)
-		list_of_rows.append(newnew_row)
+		rowfile_names = newnew_row[0]
+		del newnew_row[0]
+		newnewnew_row = []
+		newnewnew_row.append(rowfile_names)
+		newnewnew_row.append(highest_val)
+		newnewnew_row.extend(newnew_row)
+		list_of_rows.append(newnewnew_row)
 		row_names.append(file)
 	col_names = [i.strip('>') for i in col_names]
 	col_names = [i.strip('\n') for i in col_names]
-	df = pd.DataFrame(columns=col_names,data=list_of_rows)
+	new_col_names = []
+	col_names_name = col_names[0]
+	del col_names[0]
+	new_col_names.append(col_names_name)
+	new_col_names.append("max bp")
+	new_col_names.extend(col_names)
+	df = pd.DataFrame(columns=new_col_names,data=list_of_rows)
 	df = df.loc[(df!=0).any(axis=1)]
 	df.to_csv(sys.argv[2], sep='\t')
 
