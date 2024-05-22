@@ -41,6 +41,11 @@ workflow {
     .map { row -> tuple( row.id, file(row.ref) ) }
     .set { ch_fasta }
 
+    PARSE_METADATA.out.augustus_csv
+    .splitCsv( header: true, sep: ',' )
+    .map { row -> tuple( row.id, row.augustus ) }
+    .set { augustus_ref_ch }
+
     /*
     -------------------------
     PERFORM RAW DATA TRIMMING
@@ -92,14 +97,14 @@ workflow {
     ---------------
     */
 
-    AUGUSTUS_FASTA(ch_fasta, params.augustus_ref)
-    AUGUSTUS_READS(MEGAHIT.out.megahit_ch, params.augustus_ref)
+    AUGUSTUS_FASTA(ch_fasta, augustus_ref_ch)
+    AUGUSTUS_READS(MEGAHIT.out.megahit_ch, augustus_ref_ch)
     AUGUSTUS_PROT(AUGUSTUS_FASTA.out.augustus_ch.concat(AUGUSTUS_READS.out.augustus_ch))
 
     /*
-    ---------------------------
-    ORTHOLOGOUS GENE ANNOTATION 
-    ---------------------------
+    -------------------
+    ORTHOLOGY INFERENCE 
+    -------------------
     */
 
     ORTHOFINDER(AUGUSTUS_PROT.out.aa_ch.collect())

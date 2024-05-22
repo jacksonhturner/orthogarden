@@ -6,14 +6,14 @@ process AUGUSTUS {
 
     input:
         tuple val(id), path(fasta)
-        val augustus_ref
+	tuple val(id), val(augustus)
 
     output:
         tuple val(id), path("*.gff"), emit: augustus_ch
 
     script:
         """
-        augustus --codingseq=on --species=${augustus_ref} ${fasta} > ${id}.gff
+        augustus --codingseq=on --species=${augustus} ${fasta} > ${id}.gff
         """
 }
 

@@ -10,6 +10,7 @@ process PARSE_METADATA {
     output:
         path 'reads.csv', emit: reads_csv
         path 'fasta.csv', emit: fasta_csv
+        path 'augustus.csv', emit: augustus_csv
 
     script:
         """

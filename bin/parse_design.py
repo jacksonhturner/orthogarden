@@ -8,7 +8,7 @@ def check_columns(df):
     '''
     make sure only expected columns present
     '''
-    expected_cols = ['id', 'r1', 'r2', 'ref']
+    expected_cols = ['id', 'r1', 'r2', 'ref', 'augustus']
     for i in df.columns:
         assert i in expected_cols
 
@@ -51,3 +51,7 @@ df_reads.to_csv('reads.csv', index=False)
 df_fasta = df[df['ref'].notna()]
 df_fasta = df_fasta[['id', 'ref']]
 df_fasta.to_csv('fasta.csv', index=False)
+
+df_augustus = df[df['augustus'].notna()]
+df_augustus = df_augustus[['id', 'augustus']]
+df_augustus.to_csv('augustus.csv', index=False)
