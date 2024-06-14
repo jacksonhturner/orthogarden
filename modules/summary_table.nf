@@ -13,8 +13,8 @@ process SUMMARY_TABLE{
       path("summary_table_with_taxon.csv"), emit: taxon_table
 
     script:
-        '''
+        """
         completeness_table_OG.py . summary_table_with_genes.csv
         summary_table_OG.py summary_table_with_genes.csv summary_table_with_taxon.csv
-        '''
+        """
 }

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import gzip
 import pandas as pd
 import sys
