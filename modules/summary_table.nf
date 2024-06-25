@@ -6,15 +6,15 @@ process SUMMARY_TABLE{
     publishDir(path: "${publish_dir}/summary_table", mode: "symlink")
 
     input:
-      path(orthofinder_finder)
+        path(orthofinder_finder)
 
     output:
-      path("summary_table_with_genes.csv"), emit: gene_table
-      path("summary_table_with_taxon.csv"), emit: taxon_table
+        path("summary_table_with_genes.tsv"), emit: gene_table
+        path("summary_table_with_taxon.tsv"), emit: taxon_table
 
     script:
         """
-        completeness_table_OG.py . summary_table_with_genes.csv
-        summary_table_OG.py summary_table_with_genes.csv summary_table_with_taxon.csv
+        completeness_table_OG.py . summary_table_with_genes.tsv
+        summary_table_OG.py summary_table_with_genes.tsv summary_table_with_taxon.tsv
         """
 }
