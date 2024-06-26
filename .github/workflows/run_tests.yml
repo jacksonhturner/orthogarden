@@ -1,11 +1,13 @@
-name: Check Home Directory
+name: RunTests
 
 on: [push]
 
 jobs:
-    check-home:
-        runs-on: ubuntu-latest
-
+  build:
+    runs-on: ubuntu-latest
     steps:
-    - name: Print HOME environment variable
-    run: echo $HOME
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        cd $GITHUB_WORKSPACE
+        pwd
