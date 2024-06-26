@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nextflow run ~/nextflow/orthogarden/main.nf \
+nextflow run ../../../main.nf \
     --input metadata.csv \
     --threshold_val 0.9 \
     --publish_dir results \
