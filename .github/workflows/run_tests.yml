@@ -22,4 +22,4 @@ jobs:
     - name: Running pipeline test
       working-directory: ./tests/anopheles_pseudoref/pseudo_refs/
       run: |
-        01_run_og.sh
+        bash 01_run_og.sh
