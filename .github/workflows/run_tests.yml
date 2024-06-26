@@ -12,6 +12,8 @@ jobs:
         cd ~
         curl -s https://get.nextflow.io | bash
         chmod +x nextflow
-        ~/nextflow -version
+        curl -s https://raw.githubusercontent.com/apptainer/apptainer/main/tools/install-unprivileged.sh | bash -s - ~/
         cd $GITHUB_WORKSPACE
+        ~/nextflow -version
+        ~/apptainer --version
         pwd
