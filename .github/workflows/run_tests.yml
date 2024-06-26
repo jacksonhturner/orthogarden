@@ -13,7 +13,9 @@ jobs:
         curl -s https://get.nextflow.io | bash
         chmod +x nextflow
         curl -s https://raw.githubusercontent.com/apptainer/apptainer/main/tools/install-unprivileged.sh | bash -s - ~/
+        export PATH=$PATH:/home/runner/bin
+        export PATH=$PATH:/home/runner
         cd $GITHUB_WORKSPACE
-        ~/nextflow -version
-        ~/apptainer --version
+        nextflow -version
+        apptainer --version
         pwd
