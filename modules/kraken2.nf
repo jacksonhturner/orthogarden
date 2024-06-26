@@ -5,11 +5,11 @@ process KRAKEN2 {
   publishDir(path: "${publish_dir}/kraken/", mode: "symlink")
 
   input:  
-    tuple val(id), path(r1), path(r2)
+    tuple val(id), path(r1), path(r2), val(augustus)
     path(kraken_db)
   
   output:
-    tuple val(id), path("*1.unclassified.fq"), path("*2.unclassified.fq"), emit : reads
+    tuple val(id), path("*1.unclassified.fq"), path("*2.unclassified.fq"), val(augustus), emit : reads
   
   script:
     """

@@ -5,7 +5,7 @@ process FASTQC {
     publishDir(path: "${publish_dir}/qc/${outdir_name}", mode: "copy")
 
     input:
-        tuple val(id), path(r1), path(r2)
+        tuple val(id), path(r1), path(r2), val(augustus)
         val outdir_name
 
     output:

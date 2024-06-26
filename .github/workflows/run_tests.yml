@@ -1,0 +1,11 @@
+name: Check Home Directory
+
+on: [push]
+
+jobs:
+    check-home:
+        runs-on: ubuntu-latest
+
+    steps:
+    - name: Print HOME environment variable
+    run: echo $HOME

@@ -31,7 +31,7 @@ def main():
     files_ls = check_for_pairs(seq_path, fq_file_dt)
     files_ls = add_fasta_files(seq_path, fa_file_dt, files_ls)
 
-    df = pd.DataFrame(files_ls, columns = ["id", "r1", "r2", "ref"])
+    df = pd.DataFrame(files_ls, columns = ["id", "r1", "r2", "ref", "augustus"])
     df.to_csv("metadata.csv", index=None)
 
 
@@ -59,12 +59,12 @@ def check_for_pairs(seq_path, fq_file_dt):
             name = strip_chars(v)
             r1 = os.path.join(seq_path, k)
             r2 = os.path.join(seq_path,f"{v[:-1]}2{k[len(v):]}")
-            files_ls.append([name, r1, r2, None])
+            files_ls.append([name, r1, r2, None, None])
         elif v.endswith("2") and f"{v[:-1]}1" in prefix_names:
             continue
         else:
             r1 = os.path.join(seq_path, k)
-            files_ls.append([v, r1, None, None])
+            files_ls.append([v, r1, None, None, None])
 
     return files_ls
 
@@ -80,7 +80,7 @@ def strip_chars(v):
 
 def add_fasta_files(seq_path, fa_file_dt, files_ls):
     for k, v in fa_file_dt.items():
-        files_ls.append([v, None, None, os.path.join(seq_path, k)])
+        files_ls.append([v, None, None, os.path.join(seq_path, k), None])
 
     return files_ls
 

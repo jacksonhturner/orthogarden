@@ -5,10 +5,10 @@ process MEGAHIT {
     publishDir(path: "${publish_dir}/megahit/", mode: "copy")
 
     input:
-        tuple val(id), path(r1), path(r2)
+        tuple val(id), path(r1), path(r2), val(augustus)
 
     output:
-        tuple val(id), path("*final.contigs.fa"), emit: megahit_ch
+        tuple val(id), path("*final.contigs.fa"), val(augustus), emit: megahit_ch
 
     script:
         """

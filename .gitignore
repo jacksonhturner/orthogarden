@@ -1,5 +1,5 @@
 .nextflow/*
 .nextflow.log*
 .nextflow.pid*
-
+results
 *swp
