@@ -21,4 +21,5 @@ jobs:
         nextflow -version
         apptainer --version
         pwd
+        ulimit -a
         bash 01_run_og.sh

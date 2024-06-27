@@ -6,13 +6,14 @@ process ORTHOFINDER {
 
     input:
         path('*')
+        val ulimit
         
     output:
         path("OrthoFinder/Results*"), emit: orthofinder_ch 
         
     script:
         """
-        ulimit -n 100000
+        ulimit -n $ulimit
         orthofinder \
           -t ${task.cpus} \
           -f .

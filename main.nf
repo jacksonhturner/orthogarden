@@ -102,7 +102,8 @@ workflow {
     -------------------
     */
 
-    ORTHOFINDER(AUGUSTUS_PROT.out.aa_ch.collect())
+    ORTHOFINDER(AUGUSTUS_PROT.out.aa_ch.collect(),
+                params.threshold_val)
     ORTHOFINDER_FINDER(ORTHOFINDER.out.orthofinder_ch,
                        params.threshold_val,
                        AUGUSTUS_PROT.out.codingseq_ch.collect(),
