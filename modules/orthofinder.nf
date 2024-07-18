@@ -12,10 +12,11 @@ process ORTHOFINDER {
         
     script:
         """
-        ulimit -n 100000
+        ulimit -n 1000000
         orthofinder \
           -t ${task.cpus} \
-          -f .
+          -f . \
+          -og
         """
 }
 

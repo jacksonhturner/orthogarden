@@ -16,6 +16,8 @@ include { SUMMARY_TABLE                     } from "./modules/summary_table.nf"
 include { MAFFT                             } from "./modules/mafft.nf"
 include { TRANSLATORX                       } from "./modules/translatorx.nf"
 include { TRIMAL                            } from "./modules/trimal.nf"
+include { MSTATX                            } from "./modules/mstatx.nf"
+include { MSTATX_SCORES                     } from "./modules/mstatx_scores.nf"
 include { IQTREE ; IQTREE_WITH_THIRDS       } from "./modules/iqtree.nf"
 include { FIX_FRAMES ; REMOVE_THIRDS        } from "./modules/seq_utils.nf"
 
@@ -116,9 +118,9 @@ workflow {
                ORTHOFINDER_FINDER.out.codingseq_ch.collect())
 
     /*
-    ----------------------
-    SUMMARY TABLE CREATION
-    ----------------------
+    -------------------------
+    OG SUMMARY TABLE CREATION
+    -------------------------
     */
 
     SUMMARY_TABLE(ORTHOFINDER_FINDER.out.protein_ch)
@@ -139,6 +141,15 @@ workflow {
 
     TRANSLATORX(combined_ch.flatten().buffer(size: params.buffer_n*2, remainder: true))
     TRIMAL(TRANSLATORX.out.translatorx_ch.flatten().buffer(size: params.buffer_n, remainder: true), params.masking_threshold)
+
+    /*
+    ----------------
+    ALIGNMENT SCORES
+    ----------------
+    */
+
+    MSTATX(TRIMAL.out.trimal_ch.flatten().buffer(size: params.buffer_n, remainder: true))
+    MSTATX_SCORES(MSTATX.out.mstatx_ch.collect())
 
     /*
     --------------------------
