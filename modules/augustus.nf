@@ -5,8 +5,7 @@ process AUGUSTUS {
     // publishDir(path: "${publish_dir}/augustus/gff", mode: "copy")
 
     input:
-        tuple val(id), path(fasta)
-	tuple val(id), val(augustus)
+        tuple val(id), path(fasta), val(augustus)
 
     output:
         tuple val(id), path("*.gff"), emit: augustus_ch

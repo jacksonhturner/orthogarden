@@ -1,0 +1,25 @@
+name: RunTests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        cd ~
+        curl -s https://get.nextflow.io | bash
+        chmod +x nextflow
+        curl -s https://raw.githubusercontent.com/apptainer/apptainer/main/tools/install-unprivileged.sh | bash -s - ~/
+    - name: Running pipeline test
+      working-directory: ./tests/anopheles_pseudoref/pseudo_refs/
+      run: |
+        export PATH=$PATH:/home/runner/bin
+        export PATH=$PATH:/home/runner
+        nextflow -version
+        apptainer --version
+        pwd
+        ulimit -a
+        bash 01_run_og.sh

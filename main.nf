@@ -35,18 +35,13 @@ workflow {
 
     PARSE_METADATA.out.reads_csv
     .splitCsv( header: true, sep: ',' )
-    .map { row -> tuple( row.id, file(row.r1), file(row.r2) ) }
+    .map { row -> tuple( row.id, file(row.r1), file(row.r2), row.augustus ) }
     .set { ch_reads_raw }
 
     PARSE_METADATA.out.fasta_csv
     .splitCsv( header: true, sep: ',' )
-    .map { row -> tuple( row.id, file(row.ref) ) }
+    .map { row -> tuple( row.id, file(row.ref), row.augustus ) }
     .set { ch_fasta }
-
-    PARSE_METADATA.out.augustus_csv
-    .splitCsv( header: true, sep: ',' )
-    .map { row -> tuple( row.id, row.augustus ) }
-    .set { augustus_ref_ch }
 
     /*
     -------------------------
@@ -99,8 +94,8 @@ workflow {
     ---------------
     */
 
-    AUGUSTUS_FASTA(ch_fasta, augustus_ref_ch)
-    AUGUSTUS_READS(MEGAHIT.out.megahit_ch, augustus_ref_ch)
+    AUGUSTUS_FASTA(ch_fasta)
+    AUGUSTUS_READS(MEGAHIT.out.megahit_ch)
     AUGUSTUS_PROT(AUGUSTUS_FASTA.out.augustus_ch.concat(AUGUSTUS_READS.out.augustus_ch))
 
     /*
@@ -109,7 +104,8 @@ workflow {
     -------------------
     */
 
-    ORTHOFINDER(AUGUSTUS_PROT.out.aa_ch.collect())
+    ORTHOFINDER(AUGUSTUS_PROT.out.aa_ch.collect(),
+                params.ulimit)
     ORTHOFINDER_FINDER(ORTHOFINDER.out.orthofinder_ch,
                        params.threshold_val,
                        AUGUSTUS_PROT.out.codingseq_ch.collect(),

@@ -1,0 +1,1 @@
+2024-06-26 12:41:42	15m 58s	adoring_euclid	OK	3a03597e180eb9442d6ba6d23ed72818	006717a8-9192-446c-b4d1-4d41f313ba3d	nextflow run /home/rkuster/nextflow/orthogarden/main.nf --input metadata.csv --threshold_val 0.9 --publish_dir results -profile local,eight -resume
