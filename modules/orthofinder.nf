@@ -29,6 +29,7 @@ process ORTHOFINDER_FINDER {
     input:
         path(orthofinder_dir)
         val(threshold_val)
+        val(limit_ogs)
         path(codingseq_ch)
         path(aa_ch)
 
@@ -47,6 +48,7 @@ process ORTHOFINDER_FINDER {
           ${orthofinder_dir} \
           ${threshold_val} \
           sequences \
-          off_narrowed_${threshold_val}
+          off_narrowed_${threshold_val} \
+          $limit_ogs
         """
 }
