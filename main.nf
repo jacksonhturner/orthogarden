@@ -108,6 +108,7 @@ workflow {
                 params.ulimit)
     ORTHOFINDER_FINDER(ORTHOFINDER.out.orthofinder_ch,
                        params.threshold_val,
+                       params.limit_ogs,
                        AUGUSTUS_PROT.out.codingseq_ch.collect(),
                        AUGUSTUS_PROT.out.aa_ch.collect())
     FIX_FRAMES(ORTHOFINDER_FINDER.out.protein_ch.collect(),

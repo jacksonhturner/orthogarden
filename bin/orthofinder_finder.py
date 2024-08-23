@@ -16,6 +16,7 @@ sys.argv[1] : results directory of OrthoFinder
 sys.argv[2] : percent (0 < x < 1) of taxa with single copies per group
 sys.argv[3] : directory with augustus files ending in "codingseq" and "faa"
 sys.argv[4] : output directory
+sys.argv[5] : limit output to n top scg_freq orthogroups (int; 0 for all)
 
 overview:
 [x] open orthogroup count summary file
@@ -26,22 +27,6 @@ overview:
     the corresponding sequence name in header (check vs dict keys, val
     is the output); append output OG file
 '''
-
-def main():
-    check_inputs()
-    count_file, group_file = get_orthofinder_path()
-    df = get_df_nice(count_file)
-    df = df.drop("Total", axis=1)
-    taxa_freq = float(sys.argv[2]) * df.shape[1]
-    taxa_names = df.columns.to_list()
-    df = add_columns(df)
-    df = df.query("scg_freq >= @taxa_freq")
-    df.to_csv(os.path.join(sys.argv[4], f"off_narrowed_{100*float(sys.argv[2])}.csv"))
-    touch_orthogroup_files(df.index.to_list())
-    group_df = get_df_nice(group_file)
-    group_df = group_df[group_df.index.isin(df.index.to_list())]
-    get_codingseqs(group_df, taxa_names)
-
 
 def check_inputs():
     if not os.path.exists(sys.argv[1]):
@@ -93,6 +78,13 @@ def add_columns(df):
     df = df.sort_values(by=["scg_freq"], ascending=False)
 
     return df
+
+
+def limit_ogs(df):
+    if sys.argv[5] == "0":
+        return df
+    else:
+        return df.head(int(sys.argv[5]))
 
 
 def touch_orthogroup_files(group_ls):
@@ -205,6 +197,23 @@ def write_to_orthogroup(taxon, seq, group, suffix):
     with open(os.path.join(sys.argv[4], f'{group}.{suffix}'), 'a') as o:
         o.write(f'>{taxon}\n')
         o.write(f'{seq}\n')
+
+
+def main():
+    check_inputs()
+    count_file, group_file = get_orthofinder_path()
+    df = get_df_nice(count_file)
+    df = df.drop("Total", axis=1)
+    taxa_freq = float(sys.argv[2]) * df.shape[1]
+    taxa_names = df.columns.to_list()
+    df = add_columns(df)
+    df = df.query("scg_freq >= @taxa_freq")
+    df = limit_ogs(df)
+    df.to_csv(os.path.join(sys.argv[4], f"off_narrowed_{100*float(sys.argv[2])}.csv"))
+    touch_orthogroup_files(df.index.to_list())
+    group_df = get_df_nice(group_file)
+    group_df = group_df[group_df.index.isin(df.index.to_list())]
+    get_codingseqs(group_df, taxa_names)
 
 
 if __name__ == "__main__":
