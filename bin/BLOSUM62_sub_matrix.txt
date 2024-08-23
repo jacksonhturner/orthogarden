@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 H HENS920102
 D BLOSUM62 substitution matrix (Henikoff-Henikoff, 1992)
 R LIT:1902106 PMID:1438297
