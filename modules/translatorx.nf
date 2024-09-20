@@ -2,7 +2,7 @@ process TRANSLATORX {
     label 'translatorx'
     label 'lil_mem'
 
-    publishDir(path: "${publish_dir}/translatorx", mode: "copy")
+    publishDir(path: "${publish_dir}/translatorx", mode: "symlink")
 
     input:
         path(combined_ch)

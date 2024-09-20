@@ -3,7 +3,7 @@ process SUMMARY_TABLE{
     label 'pandas'
     label 'lil_mem'
 
-    publishDir(path: "${publish_dir}/summary_table", mode: "symlink")
+    publishDir(path: "${publish_dir}/summary_table", mode: "copy")
 
     input:
         path(orthofinder_finder)

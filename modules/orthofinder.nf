@@ -37,6 +37,7 @@ process ORTHOFINDER_FINDER {
     output:
         path("off_narrowed_${threshold_val}/*.faa"), emit: protein_ch
         path("off_narrowed_${threshold_val}/*.fna"), emit: codingseq_ch
+        path("off_narrowed_${threshold_val}/*.csv"), emit: csv_ch
 
     script:
         """
