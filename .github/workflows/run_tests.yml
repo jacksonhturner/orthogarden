@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
     - name: Install dependencies
@@ -22,4 +22,4 @@ jobs:
         apptainer --version
         pwd
         ulimit -a
-        bash 01_run_og.sh
+        bash 02_run_og_runner.sh

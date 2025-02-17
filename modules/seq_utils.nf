@@ -40,3 +40,23 @@ process REMOVE_THIRDS {
         done
         """
 }
+
+process ALIGN_NT {
+    label 'pandas'
+    label 'lil_mem'
+
+    publishDir(path: "${publish_dir}/align_nt", mode: "copy")
+
+    input:
+        path(combined_ch)
+
+    output:
+        path("*.align_nt.fna"), emit: align_nt_ch
+
+    script:
+        """
+        for prot in ./*faa.mafft ; do
+            align_nt.py \${prot} \${prot%%faa.mafft}fa \${prot%%faa.mafft}align_nt.fna
+        done
+        """
+}

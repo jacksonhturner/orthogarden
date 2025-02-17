@@ -5,7 +5,7 @@ This python scrypt is designed to take a directory of multi-sequence alignments 
 The resulting file will be pass along to another script to provide a more succinct measure of completeness per taxon.
 Completeness is defined in this script as the percentage of base pairs present in a gene per the highest number of base pairs recovered for the gene.
 
-input: directory of aligned nucleotide sequence files (after translatorx), output .csv file
+input: directory of aligned nucleotide sequence files, output .csv file
 output: csv file demonstrating completeness of each taxon in orthogarden
 
 usage: python3 completeness_table_OG.python directory output.csv

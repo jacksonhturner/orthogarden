@@ -5,7 +5,7 @@ process TRIMAL{
     publishDir(path: "${publish_dir}/trimal", mode: "copy")
 
     input:
-      path(translatorx)
+      path(align_nt)
       val(masking_threshold)
 
     output:
@@ -13,7 +13,7 @@ process TRIMAL{
 
     script:
         """
-        for seq in *fasta ; do
+        for seq in *fna ; do
             trimal -in \${seq} -out \${seq}.masked -gt ${masking_threshold}
         done
         """

@@ -14,7 +14,7 @@ include { AUGUSTUS_PROT                     } from "./modules/augustus.nf"
 include { ORTHOFINDER ; ORTHOFINDER_FINDER  } from "./modules/orthofinder.nf"
 include { SUMMARY_TABLE                     } from "./modules/summary_table.nf"
 include { MAFFT                             } from "./modules/mafft.nf"
-include { TRANSLATORX                       } from "./modules/translatorx.nf"
+include { ALIGN_NT                          } from "./modules/seq_utils.nf"
 include { TRIMAL                            } from "./modules/trimal.nf"
 include { MSTATX                            } from "./modules/mstatx.nf"
 include { MSTATX_SCORES                     } from "./modules/mstatx_scores.nf"
@@ -136,8 +136,8 @@ workflow {
         .combine(protein_ch, by: 0)
         .map{id, prot, codingseq -> [prot, codingseq]}.set{combined_ch}
 
-    TRANSLATORX(combined_ch.flatten().buffer(size: params.buffer_n*2, remainder: true))
-    TRIMAL(TRANSLATORX.out.translatorx_ch.flatten().buffer(size: params.buffer_n, remainder: true), params.masking_threshold)
+    ALIGN_NT(combined_ch.flatten().buffer(size: params.buffer_n*2, remainder: true))
+    TRIMAL(ALIGN_NT.out.align_nt_ch.flatten().buffer(size: params.buffer_n, remainder: true), params.masking_threshold)
 
     /*
     ----------------

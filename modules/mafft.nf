@@ -33,7 +33,7 @@ process MAFFT{
     script:
         """
         for prot in ./*aa ; do
-            nwnsi \${prot} > \${prot}.mafft
+            nwnsi --amino \${prot} > \${prot}.mafft
         done
         """
 }
