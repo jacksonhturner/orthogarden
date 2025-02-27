@@ -1,20 +1,19 @@
 # Orthogarden :seedling:
 
-logo
+An automated and containerized de novo assembly-based phylogenomics pipeline aimed to recover accurate and reproducible phylogenies from any combination of short reads and assemblies with particular emphasis on non-model taxa.
 
-a super brief description of what it does. (~2 sentences)  
 inputs  
 outputs  
 
-## contents
-- [overview](#overview)
-- [usage](#usage)
-  - [requirements](#requirements)
-  - [quick start](#quick-start)
-- [accessing and interpreting output](#accessing-and-interpreting-output)
-- [license](#license)
+## Contents
+- [Overview](#overview)
+- [Usage](#usage)
+  - [Requirements](#requirements)
+  - [Quick start](#quick-start)
+- [Accessing and interpreting output](#accessing-and-interpreting-output)
+- [License](#license)
 
-## overview
+## Overview
 
 Orthogarden is a nextflow pipeline designed to leverage any combination of short reads and assemblies to generate a robust and accurate ML phylogeny with minimal user input. It attempts to accomplish this by first trimming reads, filtering reads for non-target contamination, de novo assembling reads, annotating assemblies, extracting orthologs from assemblies, and using harvested orthologs to create a phylogeny. A Nextflow-based architecture allows Orthogarden to run seamlessly from initiation to completion with little required knowledge of command line beyond installing dependencies and editing a config file to user standards. Extracting orthologs directly from de novo assemblies for direct comparison between taxa sets Orthogarden apart from other phylogenomics pipelines as it does not require a pre-selected suite of reference orthologs to function. Orthogarden is highly scalable and is demonstrated to generate accurate phylogenies from large and small datasets of varying sample quality.
 
@@ -54,7 +53,7 @@ flowchart TB
     v30([FIX_FRAMES])
     v31([SUMMARY_TABLE])
     v33([MAFFT])
-    v37([TRANSLATORX])
+    v37([ALIGN_NT])
     v39([TRIMAL])
     v40([MSTATX])
     v41([MSTATX_SCORES])
@@ -103,20 +102,85 @@ flowchart TB
     end
 ```
 
-## usage
+## Requirements
+
+nextflow (22.10.4+)
+apptainer (1.1.8+)
+
+
+## Usage
 
 For full documentation on using orthogarden, please see the [Orthogarden Wiki](https://github.com/jacksonhturner/orthogarden/wiki).
 
-## requirements
+## Quick start
 
-## quick start
+OrthoGarden requires a csv metadata file with the following headers `id`,	`r1`,	`r2`,	`ref`, and `augustus` for each input sample. The `id` and `augustus` fields must be filled out for every sample and either both `r1`/`r2` fields must be present OR the `ref` field for each sample.
+
+Example metadata.csv:
+```
+id,r1,r2,ref,augustus
+A_aegypti,,,/path/to/A_aegypti.fasta,aedes
+A_albimanus,,,/path/to/A_albimanus.fasta,aedes
+C_quinquefasciatus,C_quinquefasciatus_R1.fastq,C_quinquefasciatus_R2.fastq,,aedes
+D_melanogaster,D_melanogaster_R1.fastq,D_melanogaster_R2.fastq,,fly
+```
+> [!NOTE]
+> _The above example includes two samples using pre-assembled genomes (A_aegypti and A_albimanus) and two samples using paired-end reads (C_quinquefasciatus and D_melanogaster). Notice the Augustus references are allowed to vary._
+
+To run the pipeline on a local linux server:
+```
+nextflow run /path/to/orthogarden/main.nf \
+    --input metadata.csv \
+    --threshold_val 0.9 \
+    --publish_dir results \
+    -profile local,two \
+    -resume
+```
+> [!NOTE]
+> _This is a simplified usage script, for full details on all OrthoGarden parameters see the [wiki/parameters](https://github.com/jacksonhturner/orthogarden/wiki/Parameters)._
 
 Include test dataset and a quick run of the pipeine
 
-#TODO links to relevant wikis
+For more details on running the pipeline, installing prerequisites, or running on a slurm-based HPC, see the [wiki](https://github.com/jacksonhturner/orthogarden/wiki).
 
-## accessing and interpreting output
+## Accessing and interpreting output
 
-## license
+Sample results directory:
+```
+.
+├── publish
+|   ├── align_nt
+|   ├── augustus
+|   ├── design
+|   ├── iqtree
+|   |   ├── run_iqtree
+|   |   ├── run_iqtree.best_model.nex
+|   |   ├── run_iqtree.best_scheme
+|   |   ├── run_iqtree.best_scheme.nex
+|   |   ├── run_iqtree.bionj
+|   |   ├── run_iqtree.ckp.gz
+|   |   ├── run_iqtree.contree
+|   |   ├── run_iqtree.iqtree
+|   |   ├── run_iqtree.log
+|   |   ├── run_iqtree.mldist
+|   |   ├── run_iqtree.model.gz
+|   |   ├── run_iqtree.splits.nex
+|   |   ├── run_iqtree.treefile
+|   |   └── run_iqtree.ufboot
+|   ├── mafft
+|   ├── mstatx
+|   ├── mstatx_scores
+|   ├── orthofinder
+|   ├── orthofinder_finder
+|   ├── remove_thirds
+|   ├── summary
+|   ├── summary_table
+|   |   ├── summary_table_with_genes.tsv
+|   |   └── summary_table_with_taxon.tsv
+|   └── trimal
+└── work
+```
+
+## License
 
 <a href="https://github.com/jacksonhturner/orthogarden/blob/master/LICENSE">MIT license</a>
