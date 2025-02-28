@@ -6,12 +6,13 @@ inputs
 outputs  
 
 ## Contents
-- [Overview](#overview)
-- [Usage](#usage)
-  - [Requirements](#requirements)
-  - [Quick start](#quick-start)
-- [Accessing and interpreting output](#accessing-and-interpreting-output)
-- [License](#license)
+- [Overview](#Overview)
+- [Usage](#Usage)
+  - [Requirements](#Requirements)
+  - [Quick start](#Quick-start)
+  -   - [Quick start](#Test-run)
+- [Accessing and interpreting output](#Accessing-and-interpreting-output)
+- [License](#License)
 
 ## Overview
 
@@ -105,14 +106,18 @@ flowchart TB
 ## Requirements
 
 nextflow (22.10.4+)
+
 apptainer (1.1.8+)
 
+```{bash}
+git clone https://github.com/jacksonhturner/orthogarden.git
+```
 
-## Usage
+For more installation help, please see the [wiki](https://github.com/jacksonhturner/orthogarden/wiki/Installation-&-Dependencies).
 
-For full documentation on using orthogarden, please see the [Orthogarden Wiki](https://github.com/jacksonhturner/orthogarden/wiki).
+### Usage
 
-## Quick start
+### Quick start
 
 OrthoGarden requires a csv metadata file with the following headers `id`,	`r1`,	`r2`,	`ref`, and `augustus` for each input sample. The `id` and `augustus` fields must be filled out for every sample and either both `r1`/`r2` fields must be present OR the `ref` field for each sample.
 
@@ -128,7 +133,7 @@ D_melanogaster,D_melanogaster_R1.fastq,D_melanogaster_R2.fastq,,fly
 > _The above example includes two samples using pre-assembled genomes (A_aegypti and A_albimanus) and two samples using paired-end reads (C_quinquefasciatus and D_melanogaster). Notice the Augustus references are allowed to vary._
 
 To run the pipeline on a local linux server:
-```
+```{bash}
 nextflow run /path/to/orthogarden/main.nf \
     --input metadata.csv \
     --threshold_val 0.9 \
@@ -139,7 +144,20 @@ nextflow run /path/to/orthogarden/main.nf \
 > [!NOTE]
 > _This is a simplified usage script, for full details on all OrthoGarden parameters see the [wiki/parameters](https://github.com/jacksonhturner/orthogarden/wiki/Parameters)._
 
-Include test dataset and a quick run of the pipeine
+### Test run
+
+Once you have apptainer and nextflow installed, to make sure the pipeline is configured correctly on your machine, run the following test from within the orthogarden directory:
+
+```{bash}
+mkdir -p ~/orthogarden_test
+
+nextflow run main.nf \
+    --input tests/anopheles_pseudoref/pseudo_refs/metadata_test.csv \
+    --threshold_val 0.9 \
+    --publish_dir ~/orthogarden_test \
+    -profile local,two \
+    -resume
+```
 
 For more details on running the pipeline, installing prerequisites, or running on a slurm-based HPC, see the [wiki](https://github.com/jacksonhturner/orthogarden/wiki).
 
@@ -165,7 +183,7 @@ Sample results directory:
 |   |   ├── run_iqtree.mldist
 |   |   ├── run_iqtree.model.gz
 |   |   ├── run_iqtree.splits.nex
-|   |   ├── run_iqtree.treefile
+|   |   ├── run_iqtree.treefile 🌱
 |   |   └── run_iqtree.ufboot
 |   ├── mafft
 |   ├── mstatx
@@ -175,11 +193,13 @@ Sample results directory:
 |   ├── remove_thirds
 |   ├── summary
 |   ├── summary_table
-|   |   ├── summary_table_with_genes.tsv
-|   |   └── summary_table_with_taxon.tsv
+|   |   ├── summary_table_with_genes.tsv 🌱
+|   |   └── summary_table_with_taxon.tsv 🌱
 |   └── trimal
 └── work
 ```
+
+🌱 - Final treefile and relevant summary files.
 
 ## License
 
