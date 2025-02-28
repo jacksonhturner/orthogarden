@@ -2,15 +2,12 @@
 
 An automated and containerized de novo assembly-based phylogenomics pipeline aimed to recover accurate and reproducible phylogenies from any combination of short reads and assemblies with particular emphasis on non-model taxa.
 
-inputs  
-outputs  
-
 ## Contents
 - [Overview](#Overview)
 - [Usage](#Usage)
   - [Requirements](#Requirements)
   - [Quick start](#Quick-start)
-  -   - [Quick start](#Test-run)
+  -   - [Test run](#Test-run)
 - [Accessing and interpreting output](#Accessing-and-interpreting-output)
 - [License](#License)
 
@@ -163,6 +160,8 @@ For more details on running the pipeline, installing prerequisites, or running o
 
 ## Accessing and interpreting output
 
+The `publish_dir` contains all of the intermediate and final files produced by OrthoGarden runs. The `work` directory contains intermediate files (see note below). Files of particular interest are noted in the example publish results below.
+
 Sample results directory:
 ```
 .
@@ -200,6 +199,9 @@ Sample results directory:
 ```
 
 🌱 - Final treefile and relevant summary files.
+
+> [!NOTE]
+> _If you are unfamiliar with Nextflow, the `work` directory consists of hexidecimal naming structure of directories with short two character names (e.g., "6f") containing one or more nested subdirectories with longer names (e.g., "19eeb79a9315d91d177d6fe985dc8f") that hold intermediate files, links, and Nextflow commands and logs. While this convention can be hard to understand, it is recommended to keep these files untouched until you are happy with your analysis, as they are used for Nextflow's resume functionality._
 
 ## License
 
