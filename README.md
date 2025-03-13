@@ -17,7 +17,7 @@ Orthogarden is a nextflow pipeline designed to leverage any combination of short
 
 Overview of pipeline:
 
-![OG_Figure_1](https://github.com/user-attachments/assets/082bcf8f-8e4a-4a0d-a5eb-c503b2d03ace)
+![OG_Figure_1](https://github.com/user-attachments/assets/644676a6-6ddc-4bf1-8c0f-ad92cb5cede2)
 
 ## Requirements
 
