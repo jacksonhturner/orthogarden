@@ -5,5 +5,5 @@ nextflow run ../../../main.nf \
     --threshold_val 0.9 \
     --publish_dir results \
     --ulimit 20000 \
-    -profile local,two \
+    -profile gh_test,two \
     -resume
