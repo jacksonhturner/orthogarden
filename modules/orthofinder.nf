@@ -47,10 +47,10 @@ process ORTHOFINDER_FINDER {
         mv *.faa sequences
 
         orthofinder_finder.py \
-          ${orthofinder_dir} \
-          ${threshold_val} \
-          sequences \
-          off_narrowed_${threshold_val} \
-          $limit_ogs
+          -d ${orthofinder_dir} \
+          -t ${threshold_val} \
+          -s sequences \
+          -o off_narrowed_${threshold_val} \
+          -l $limit_ogs
         """
 }
