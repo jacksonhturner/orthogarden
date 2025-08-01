@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+import argparse
 import math
+import numpy as np
 import os
 import pandas as pd
 import sys
@@ -28,28 +30,53 @@ overview:
     is the output); append output OG file
 '''
 
-def check_inputs():
-    if not os.path.exists(sys.argv[1]):
-        sys.exit(f'could not find {sys.argv[1]}')
-    if not 0 < float(sys.argv[2]) <= 1:
-        sys.exit(f'{sys.argv[2]} not between 0 and 1')
-    if not os.path.exists(sys.argv[3]):
-        sys.exit(f'could not find {sys.argv[3]}')
-    if not os.path.exists(sys.argv[4]):
-        sys.exit(f'could not find {sys.argv[4]}')
+def parse_user_input():
+    parser = argparse.ArgumentParser(description='')
+
+    parser.add_argument('-d', '--ogdir', type=str, required=True,
+                        help='results directory of OrthoFinder')
+
+    parser.add_argument('-t', '--threshold', type=float, required=False,
+                        default=0.33,
+                        help='minimum percent (0 < x < 1) of taxa with single copies per group')
+
+    parser.add_argument('-s', '--seqdir', type=str, required=True,
+                        help='directory with augustus files ending in codingseq and faa')
+
+    parser.add_argument('-o', '--outdir', type=str, required=True,
+                        help='directory for output')
+
+    parser.add_argument('-l', '--limit_ogs', type=int, required=False,
+                        default=0,
+                        help='limit orthogroup results to n orthogroups based on threshold')
+
+    args = parser.parse_args()
+
+    return args
+
+
+def check_inputs(args):
+    if not os.path.exists(args.ogdir):
+        sys.exit(f'could not find {args.ogdir}')
+    if not 0 < float(args.threshold) <= 1:
+        sys.exit(f'{args.threshold} not between 0 and 1')
+    if not os.path.exists(args.seqdir):
+        sys.exit(f'could not find {args.seqdir}')
+    if not os.path.exists(args.outdir):
+        sys.exit(f'could not find {args.outdir}')
     else:
-        if len(os.listdir(sys.argv[4])) > 0:
+        if len(os.listdir(args.outdir)) > 0:
             sys.exit("output directory should be empty")
 
 
-def get_orthofinder_path():
+def get_orthofinder_path(args):
     '''
     assumes standard OrthoFinder results directory structure
     '''
-    count_file = os.path.join(sys.argv[1],
+    count_file = os.path.join(args.ogdir,
                               "Orthogroups",
                               "Orthogroups.GeneCount.tsv")
-    group_file = os.path.join(sys.argv[1],
+    group_file = os.path.join(args.ogdir,
                               "Orthogroups",
                               "Orthogroups.tsv")
     return count_file, group_file
@@ -80,19 +107,45 @@ def add_columns(df):
     return df
 
 
-def limit_ogs(df):
-    if sys.argv[5] == "0":
+def limit_ogs(args, df, taxa_names):
+    """
+    if limit_ogs is set to 0, return all taxa above the threshold, else
+    iterate over the threshold descending from 1 until limit_ogs n is
+    achieved
+
+    if limit_ogs not achieved in iteration, return the last tmp_df in
+    the acceptable threshold range
+    """
+    taxa_freq = float(args.threshold) * len(taxa_names)
+    if args.limit_ogs == 0:
+        df = df.query("scg_freq >= @taxa_freq")
+        print(f"using {df.shape[0]} orthogroups")
         return df
-    else:
-        return df.head(int(sys.argv[5]))
+    elif args.threshold == 1:
+        df = df.query("scg_freq >= @taxa_freq")
+        print(f"using {df.shape[0]} orthogroups")
+        return df
+
+    for threshold in np.arange(1, args.threshold-0.01, -0.01):
+        threshold = round(threshold, 2)
+        taxa_freq = float(threshold) * len(taxa_names)
+        tmp_df = df.query("scg_freq >= @taxa_freq")
+        print(f"searching scg threshold {threshold} found {tmp_df.shape[0]} scg orthogroups")
+        if tmp_df.shape[0] >= args.limit_ogs:
+            args.threshold = threshold
+            print(f"using {args.limit_ogs} of {tmp_df.shape[0]} orthogroups")
+            return tmp_df.head(int(args.limit_ogs))
+
+    print(f"using {tmp_df.shape[0]} orthogroups")
+    return tmp_df
 
 
-def touch_orthogroup_files(group_ls):
+def touch_orthogroup_files(args, group_ls):
     '''
     create empty files to append with the orthogroup sequences
     '''
     for group in group_ls:
-        outfile = os.path.join(sys.argv[4], f'{group}.fa')
+        outfile = os.path.join(args.outdir, f'{group}.fa')
         open(outfile, 'a').close()
 
 
@@ -105,7 +158,7 @@ def get_codingseqs(group_df, taxa_names):
         print(taxon)
         group_dt = dict(zip(group_df.index, group_df[taxon]))
         group_dt = format_dictionary(group_dt)
-        search_codingseqs(taxon, group_dt)
+        search_codingseqs(args, taxon, group_dt)
 
 
 def format_dictionary(group_dt):
@@ -127,18 +180,18 @@ def format_dictionary(group_dt):
     return new_dt
 
 
-def search_codingseqs(taxon, group_dt):
+def search_codingseqs(args, taxon, group_dt):
     '''
     open the codingseq file for a taxon
     iterate the fasta sequences looking for the sequences in group_dt
     '''
-    with open(os.path.join(sys.argv[3], f'{taxon}.codingseq')) as f:
-        parse_codingseq(f, group_dt, taxon)
-    with open(os.path.join(sys.argv[3], f'{taxon}.faa')) as f:
-        parse_faa(f, group_dt, taxon)
+    with open(os.path.join(args.seqdir, f'{taxon}.codingseq')) as f:
+        parse_codingseq(args, f, group_dt, taxon)
+    with open(os.path.join(args.seqdir, f'{taxon}.faa')) as f:
+        parse_faa(args, f, group_dt, taxon)
 
 
-def parse_codingseq(f, group_dt, taxon):
+def parse_codingseq(args, f, group_dt, taxon):
     '''
     iterate lines of open fasta file
     if header, check if the header info is in group_dt values
@@ -147,7 +200,7 @@ def parse_codingseq(f, group_dt, taxon):
     for line in f:
         if line.startswith(">"):
             if seq:
-                write_to_orthogroup(taxon, seq, group, "fna")
+                write_to_orthogroup(args, taxon, seq, group, "fna")
             seq = ''
             line = '.'.join(line.rstrip().split('.')[-2:])
             if not line.startswith('g'):
@@ -162,10 +215,10 @@ def parse_codingseq(f, group_dt, taxon):
         else:
             continue
     if seq:
-        write_to_orthogroup(taxon, seq, group, "fna")
+        write_to_orthogroup(args, taxon, seq, group, "fna")
 
 
-def parse_faa(f, group_dt, taxon):
+def parse_faa(args, f, group_dt, taxon):
     '''
     iterate lines of open fasta file
     if header, check if the header info is in group_dt values
@@ -174,7 +227,7 @@ def parse_faa(f, group_dt, taxon):
     for line in f:
         if line.startswith(">"):
             if seq:
-                write_to_orthogroup(taxon, seq, group, "faa")
+                write_to_orthogroup(args, taxon, seq, group, "faa")
             seq = ''
             line = line.rstrip()[1:]
             if not line.startswith('g'):
@@ -190,32 +243,31 @@ def parse_faa(f, group_dt, taxon):
             continue
 
     if seq:
-        write_to_orthogroup(taxon, seq, group, "faa")
+        write_to_orthogroup(args, taxon, seq, group, "faa")
 
 
-def write_to_orthogroup(taxon, seq, group, suffix):
-    with open(os.path.join(sys.argv[4], f'{group}.{suffix}'), 'a') as o:
+def write_to_orthogroup(args, taxon, seq, group, suffix):
+    with open(os.path.join(args.outdir, f'{group}.{suffix}'), 'a') as o:
         o.write(f'>{taxon}\n')
         o.write(f'{seq}\n')
 
 
-def main():
-    check_inputs()
-    count_file, group_file = get_orthofinder_path()
+def main(args):
+    check_inputs(args)
+    count_file, group_file = get_orthofinder_path(args)
     df = get_df_nice(count_file)
     df = df.drop("Total", axis=1)
-    taxa_freq = float(sys.argv[2]) * df.shape[1]
     taxa_names = df.columns.to_list()
     df = add_columns(df)
-    df = df.query("scg_freq >= @taxa_freq")
-    df = limit_ogs(df)
-    df.to_csv(os.path.join(sys.argv[4], f"off_narrowed_{100*float(sys.argv[2])}.csv"))
-    touch_orthogroup_files(df.index.to_list())
+    df = limit_ogs(args, df, taxa_names)
+    df.to_csv(os.path.join(args.outdir, f"off_narrowed_{100*float(args.threshold)}.csv"))
+    touch_orthogroup_files(args, df.index.to_list())
     group_df = get_df_nice(group_file)
     group_df = group_df[group_df.index.isin(df.index.to_list())]
     get_codingseqs(group_df, taxa_names)
 
 
 if __name__ == "__main__":
-    main()
+    args = parse_user_input()
+    main(args)
 

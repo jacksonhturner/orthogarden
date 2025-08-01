@@ -37,6 +37,9 @@ For more installation help, please see the [wiki](https://github.com/jacksonhtur
 
 OrthoGarden requires a csv metadata file with the following headers `id`,	`r1`,	`r2`,	`ref`, and `augustus` for each input sample. The `id` and `augustus` fields must be filled out for every sample and either both `r1`/`r2` fields must be present OR the `ref` field for each sample.
 
+> [!NOTE]
+> _A helper script `create_metadata.py` has bin added to the `bin` directory and can assist in automating creation of metadata files for large directories of data._
+
 Example metadata.csv:
 ```
 id,r1,r2,ref,augustus
