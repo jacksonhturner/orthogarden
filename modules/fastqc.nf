@@ -2,7 +2,7 @@ process FASTQC {
     label 'fastqc'
     label 'big_mem'
 
-    publishDir(path: "${publish_dir}/qc/${outdir_name}", mode: "copy")
+    publishDir(path: "${params.publish_dir}/publish/qc/${outdir_name}", mode: "copy")
 
     input:
         tuple val(id), path(r1), path(r2), val(augustus)

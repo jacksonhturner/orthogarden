@@ -2,7 +2,7 @@ process MEGAHIT {
     label 'megahit'
     label 'big_mem'
 
-    publishDir(path: "${publish_dir}/megahit/", mode: "copy")
+    publishDir(path: "${params.publish_dir}/publish/megahit/", mode: "copy")
 
     input:
         tuple val(id), path(r1), path(r2), val(augustus)

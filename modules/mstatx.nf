@@ -2,7 +2,7 @@ process MSTATX{
     label 'mstatx'
     label 'lil_mem'
 
-    publishDir(path: "${publish_dir}/mstatx", mode: "copy")
+    publishDir(path: "${params.publish_dir}/publish/mstatx", mode: "copy")
 
     input:
       path(trimal)

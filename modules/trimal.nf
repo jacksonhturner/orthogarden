@@ -2,7 +2,7 @@ process TRIMAL{
     label 'trimal'
     label 'lil_mem'
 
-    publishDir(path: "${publish_dir}/trimal", mode: "copy")
+    publishDir(path: "${params.publish_dir}/publish/trimal", mode: "copy")
 
     input:
       path(align_nt)

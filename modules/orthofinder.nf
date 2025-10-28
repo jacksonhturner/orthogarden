@@ -2,7 +2,7 @@ process ORTHOFINDER {
     label "orthofinder"
     label "big_time"
 
-    publishDir(path: "${publish_dir}/orthofinder/", mode: "symlink")
+    publishDir(path: "${params.publish_dir}/publish/orthofinder/", mode: "symlink")
 
     input:
         path('*')
@@ -25,7 +25,7 @@ process ORTHOFINDER_FINDER {
     label "pandas"
     label "lil_mem"
 
-    publishDir(path: "${publish_dir}/orthofinder_finder/", mode: "copy")
+    publishDir(path: "${params.publish_dir}/publish/orthofinder_finder/", mode: "copy")
 
     input:
         path(orthofinder_dir)

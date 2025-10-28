@@ -3,7 +3,7 @@ process MSTATX_SCORES {
     label "pandas"
     label "lil_mem"
 
-    publishDir(path: "${publish_dir}/mstatx_scores/", mode: "copy")
+    publishDir(path: "${params.publish_dir}/publish/mstatx_scores/", mode: "copy")
 
     input:
         path(mstatx)

@@ -2,7 +2,7 @@ process FIND_MIN_GAPS {
     label 'pandas'
 	label 'lil_mem'
 
-	publishDir(path: "${publish_dir}/find_min_gaps", mode: "symlink")
+	publishDir(path: "${params.publish_dir}/publish/find_min_gaps", mode: "symlink")
 
 	input:
 	   path(mafft)

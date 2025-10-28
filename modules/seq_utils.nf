@@ -2,7 +2,7 @@ process FIX_FRAMES {
     label 'pandas'
     label 'lil_mem'
 
-    // publishDir "${publish_dir}/design", mode: 'copy'
+    // publishDir "${params.publish_dir}/publish/design", mode: 'copy'
 
     input:
         path(proteins)
@@ -25,7 +25,7 @@ process REMOVE_THIRDS {
     label "pandas"
     label "lil_mem"
 
-    publishDir(path: "${publish_dir}/remove_thirds", mode: "copy")
+    publishDir(path: "${params.publish_dir}/publish/remove_thirds", mode: "copy")
 
     input: 
         path(trimal)
@@ -45,7 +45,7 @@ process ALIGN_NT {
     label 'pandas'
     label 'lil_mem'
 
-    publishDir(path: "${publish_dir}/align_nt", mode: "copy")
+    publishDir(path: "${params.publish_dir}/publish/align_nt", mode: "copy")
 
     input:
         path(combined_ch)

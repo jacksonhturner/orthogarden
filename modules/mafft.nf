@@ -2,7 +2,7 @@ process PRE_MAFFT{
     label 'pandas'
     label 'lil_mem'
     
-    publishDir(path: "${publish_dir}/mafft", mode: "symlink")
+    publishDir(path: "${params.publish_dir}/publish/mafft", mode: "symlink")
 
     input:
        path(seqkit_aa)
@@ -22,7 +22,7 @@ process MAFFT{
     label 'mafft'
     label 'big_mem'
     
-    publishDir(path: "${publish_dir}/mafft", mode: "copy")
+    publishDir(path: "${params.publish_dir}/publish/mafft", mode: "copy")
 
     input:
         path(augustus_aa)
@@ -42,7 +42,7 @@ process OLD_MAFFT{
     label 'mafft'
     label 'big_mem'
     
-    publishDir(path: "${publish_dir}/mafft", mode: "symlink")
+    publishDir(path: "${params.publish_dir}/publish/mafft", mode: "symlink")
 
     input:
         tuple path(pre_mafft_fa), path(pre_mafft_aa)

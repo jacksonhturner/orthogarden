@@ -2,7 +2,7 @@ process CUTADAPT_ADAPTERS {
     label "cutadapt"
     label "lil_mem"
 
-    publishDir(path: "${publish_dir}/cutadapt", mode: "symlink")
+    publishDir(path: "${params.publish_dir}/publish/cutadapt", mode: "symlink")
 
     input:
         tuple val(id), path(r1), path(r2), val(augustus)

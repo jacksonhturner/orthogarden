@@ -2,7 +2,7 @@ process IQTREE {
    label 'iqtree'
    label 'sup_mem'
 
-   publishDir(path: "${publish_dir}/iqtree", mode: "copy")
+   publishDir(path: "${params.publish_dir}/publish/iqtree", mode: "copy")
 
    input:
       path(thirds_removed)
@@ -29,7 +29,7 @@ process IQTREE_WITH_THIRDS {
    label 'iqtree'
    label 'sup_mem'
 
-   publishDir(path: "${publish_dir}/iqtree", mode: "symlink")
+   publishDir(path: "${params.publish_dir}/publish/iqtree", mode: "symlink")
 
    input:
       path(thirds_removed)
