@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 
+"""
+Takes as input the amino acid alignment from mafft and the
+corresponding nucleotide sequence (both as fasta seqs).
+
+Progressively create a corresponding nucleic acid sequence that aligns
+to the mafft spacing.
+"""
+
 import sys
 
 
@@ -70,6 +78,9 @@ aa_dt = {"ATT" : "I",
 
 
 def get_sequence(fasta):
+    """
+    Open a fasta file and return as a dictionary of name:seq pairings
+    """
     fasta_dt = {}
     seq = ""
     with open(fasta) as f:
@@ -88,18 +99,32 @@ def get_sequence(fasta):
 
 
 def align_nt_to_mafft(m_seq, f_seq):
+    """
+    Takes as input the mafft aligned protein and raw nt fastq sequences
+    corresponding to identical sequence names.
+
+    Iterate over amino acids in m_seq:
+        - if gap (-), equate to 3 gaps in nt
+        - confirm that the aa sequence aligns to each nt codon
+    """
     print(m_seq)
     print(f_seq)
     result = ""
     f_pos = 0
+
     for m in m_seq:
         if m == "-":
             result += "---"
         else:
-            if not m == aa_dt[f_seq[f_pos:f_pos+3]]:
-                sys.exit("f_seq")
-            else:
+            try:
+                m == aa_dt[f_seq[f_pos:f_pos+3]]
                 result += f_seq[f_pos:f_pos+3]
+            except KeyError:
+                if m == "X":
+                    result += f_seq[f_pos:f_pos+3]
+                else:
+                    print(f"{f_seq[f_pos:f_pos+3]} not corresponding to X")
+                    sys.exit()
             f_pos += 3
     return result
 
