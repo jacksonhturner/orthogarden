@@ -1,5 +1,5 @@
-nextflow run ../main.nf \
-    --input metadata.csv \
+nextflow run /path/to/orthogarden/main.nf \
+    --input /path/to/metadata.csv \
     --publish_dir test_run2/ \
     --kraken_db /pickett_shared/databases/k2_pluspf_20230314/ \
     --threshold_val 0.5
