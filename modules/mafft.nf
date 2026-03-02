@@ -32,6 +32,8 @@ process MAFFT{
 
     script:
         """
+        mkdir -p ./TMP
+        TMPDIR=\$(realpath ./TMP)
         for prot in ./*aa ; do
             nwnsi --amino \${prot} > \${prot}.mafft
         done

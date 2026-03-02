@@ -30,9 +30,6 @@ def parse_user_input():
     parser.add_argument('-d', '--ogdir', type=str, required=True,
                         help='results directory of OrthoFinder')
 
-    parser.add_argument('-s', '--seqdir', type=str, required=True,
-                        help='directory with augustus files ending in codingseq and faa')
-
     parser.add_argument('-o', '--outdir', type=str, required=True,
                         help='directory for output')
 
@@ -44,8 +41,6 @@ def parse_user_input():
 def check_inputs(args):
     if not os.path.exists(args.ogdir):
         sys.exit(f'could not find {args.ogdir}')
-    if not os.path.exists(args.seqdir):
-        sys.exit(f'could not find {args.seqdir}')
     if not os.path.exists(args.outdir):
         sys.exit(f'could not find {args.outdir}')
     else:
