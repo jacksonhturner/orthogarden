@@ -164,7 +164,9 @@ workflow {
 }
 
 workflow.onComplete {
-    log.info "OrthoGarden version ${Utils.getGitVersion()} completed at: ${workflow.complete}"
+    def ver = Utils.getGitVersion()
+    log.info "OrthoGarden version ${ver}"
+    log.info "Completed at: ${workflow.complete}"
     log.info "Duration: ${workflow.duration}"
     log.info "Success: ${workflow.success}"
 }
