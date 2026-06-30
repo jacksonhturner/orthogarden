@@ -1,5 +1,12 @@
 # OrthoGarden :seedling:
 
+![GitHub release](https://img.shields.io/github/v/release/jacksonhturner/orthogarden)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/jacksonhturner/orthogarden?include_prereleases)
+![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A522.10.0-23aa62.svg?labelColor=000000)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+***
+
 An automated and containerized de novo assembly-based phylogenomics pipeline aimed to recover accurate and reproducible phylogenies from any combination of short reads and assemblies with particular emphasis on non-model taxa.
 
 ## Contents
@@ -53,6 +60,10 @@ D_melanogaster,D_melanogaster_R1.fastq,D_melanogaster_R2.fastq,,fly
 
 To run the pipeline on a local linux server:
 ```{bash}
+
+# Define a SCRATCHDIR location to store singularity images (optional)
+SCRATCHDIR=results
+
 nextflow run /path/to/orthogarden/main.nf \
     --input metadata.csv \
     --threshold_val 0.9 \
@@ -69,6 +80,9 @@ Once you have apptainer and nextflow installed, to make sure the pipeline is con
 
 ```{bash}
 mkdir -p ~/orthogarden_test
+
+# Define a SCRATCHDIR location to store singularity images (optional)
+SCRATCHDIR=~/orthogarden_test
 
 nextflow run main.nf \
     --input tests/anopheles_pseudoref/pseudo_refs/metadata_test.csv \

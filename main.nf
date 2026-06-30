@@ -162,3 +162,9 @@ workflow {
     }
 
 }
+
+workflow.onComplete {
+    log.info "OrthoGarden version ${workflow.manifest.version} completed at: ${workflow.complete}"
+    log.info "Duration: ${workflow.duration}"
+    log.info "Success: ${workflow.success}"
+}
