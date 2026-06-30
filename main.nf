@@ -22,6 +22,7 @@ include { IQTREE ; IQTREE_WITH_THIRDS       } from "./modules/iqtree.nf"
 include { FIX_FRAMES ; REMOVE_THIRDS        } from "./modules/seq_utils.nf"
 
 workflow {
+    log.info "OrthoGarden version: ${Utils.getGitVersion()}"
 
     /*
     ---------------------------
@@ -163,10 +164,3 @@ workflow {
 
 }
 
-workflow.onComplete {
-    def ver = Utils.getGitVersion()
-    log.info "OrthoGarden version ${ver}"
-    log.info "Completed at: ${workflow.complete}"
-    log.info "Duration: ${workflow.duration}"
-    log.info "Success: ${workflow.success}"
-}
