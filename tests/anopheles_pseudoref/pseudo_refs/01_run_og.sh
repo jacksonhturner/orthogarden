@@ -1,5 +1,7 @@
 #!/bin/bash
 
+nextflow -version
+
 # this run assumes SCRATCHDIR is defined
 nextflow run ../../../main.nf \
     --input metadata.csv \

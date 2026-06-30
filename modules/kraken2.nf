@@ -2,7 +2,7 @@ process KRAKEN2 {
   label "kraken2"
   label "sup_mem"
 
-  publishDir(path: "${params.publish_dir}/publish/kraken/", mode: "symlink")
+  publishDir { "${params.publish_dir}/publish/kraken/" }, mode: "symlink"
 
   input:  
     tuple val(id), path(r1), path(r2), val(augustus)
