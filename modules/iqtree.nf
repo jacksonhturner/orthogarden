@@ -6,6 +6,7 @@ process IQTREE {
 
    input:
       path(thirds_removed)
+      val(iqtree_model)
 
    output:
       path("*"), emit: iqtree_ch
@@ -15,8 +16,9 @@ process IQTREE {
        mkdir run_iqtree
        mv *.no3rds run_iqtree
 
-       iqtree2 -p run_iqtree \
-       -m MFP+MERGE \
+       iqtree3 -p run_iqtree \
+       -st DNA \
+       -m $iqtree_model \
        -B 1000 \
        -rcluster 10 \
        -bnni \
@@ -33,6 +35,7 @@ process IQTREE_WITH_THIRDS {
 
    input:
       path(thirds_removed)
+      val(iqtree_model)
 
    output:
       path("*"), emit: iqtree_ch
@@ -42,8 +45,9 @@ process IQTREE_WITH_THIRDS {
        mkdir run_iqtree
        mv *.masked run_iqtree
 
-       iqtree2 -p run_iqtree \
-       -m MFP+MERGE \
+       iqtree3 -p run_iqtree \
+       -st DNA \
+       -m $iqtree_model \
        -B 1000 \
        -rcluster 10 \
        -bnni \

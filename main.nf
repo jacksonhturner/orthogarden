@@ -1,13 +1,14 @@
 nextflow.enable.dsl=2
 
 include { PARSE_METADATA                    } from "./modules/metadata.nf"
-include { CUTADAPT_ADAPTERS                 } from "./modules/cutadapt.nf"
+include { FASTP_ADAPTERS                    } from "./modules/fastp.nf"
 include { FASTQC as FASTQC_RAW              } from "./modules/fastqc.nf"
 include { FASTQC as FASTQC_TRIM             } from "./modules/fastqc.nf"
 include { MULTIQC as MULTIQC_RAW            } from "./modules/multiqc.nf"
 include { MULTIQC as MULTIQC_TRIM           } from "./modules/multiqc.nf"
 include { KRAKEN2                           } from "./modules/kraken2.nf"
 include { MEGAHIT                           } from "./modules/megahit.nf"
+include { MULTI_FILTER                      } from "./modules/multi_filter.nf"
 include { AUGUSTUS as AUGUSTUS_FASTA        } from "./modules/augustus.nf"
 include { AUGUSTUS as AUGUSTUS_READS        } from "./modules/augustus.nf"
 include { AUGUSTUS_PROT                     } from "./modules/augustus.nf"
@@ -56,8 +57,8 @@ workflow {
     }
 
     if (!params.skip_trim) {
-        CUTADAPT_ADAPTERS(ch_reads_raw, params.r1_adapter, params.r2_adapter, params.minimum_length)
-        ch_reads_pre_kraken = CUTADAPT_ADAPTERS.out.reads
+        FASTP_ADAPTERS(ch_reads_raw, params.minimum_length)
+        ch_reads_pre_kraken = FASTP_ADAPTERS.out.reads
 
         if (!params.skip_qc) {
             FASTQC_TRIM(ch_reads_pre_kraken, "trimmed")
@@ -89,6 +90,14 @@ workflow {
 
     MEGAHIT(ch_reads_pre_assembly)
 
+    // This is an experimental feature to filter contigs using megahit coverage
+    if (params.multi_filter) {
+        MULTI_FILTER(MEGAHIT.out.megahit_ch, params.multi_filter).set{megahit_ch}
+    } else {
+        MEGAHIT.out.megahit_ch.set{megahit_ch}
+    }
+
+
     /*
     ---------------
     GENE PREDICTION
@@ -96,7 +105,7 @@ workflow {
     */
 
     AUGUSTUS_FASTA(ch_fasta)
-    AUGUSTUS_READS(MEGAHIT.out.megahit_ch)
+    AUGUSTUS_READS(megahit_ch)
     AUGUSTUS_PROT(AUGUSTUS_FASTA.out.augustus_ch.concat(AUGUSTUS_READS.out.augustus_ch))
 
     /*
@@ -156,10 +165,10 @@ workflow {
     */
 
     if (!params.retain_third_pos) {
-            REMOVE_THIRDS(TRIMAL.out.trimal_ch.flatten().buffer(size: params.buffer_n, remainder: true))
-            IQTREE(REMOVE_THIRDS.out.remove_thirds_ch.collect())
-        } else {
-            IQTREE_WITH_THIRDS(TRIMAL.out.trimal_ch.collect())
+        REMOVE_THIRDS(TRIMAL.out.trimal_ch.flatten().buffer(size: params.buffer_n, remainder: true))
+        IQTREE(REMOVE_THIRDS.out.remove_thirds_ch.collect(), params.iqtree_model)
+    } else {
+        IQTREE_WITH_THIRDS(TRIMAL.out.trimal_ch.collect(), params.iqtree_model)
     }
 
 }

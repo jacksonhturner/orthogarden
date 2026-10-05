@@ -157,7 +157,7 @@ flowchart TB
     v2([PARSE_METADATA])
     v6([FASTQC_RAW])
     v7([MULTIQC_RAW])
-    v12([CUTADAPT_ADAPTERS])
+    v12([FASTP_ADAPTERS])
     v14([FASTQC_TRIM])
     v15([MULTIQC_TRIM])
     v18([KRAKEN2])
