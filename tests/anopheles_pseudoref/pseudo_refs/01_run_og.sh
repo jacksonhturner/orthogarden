@@ -7,7 +7,7 @@ nextflow run ../../../main.nf \
     --input metadata.csv \
     --threshold_val 0.9 \
     --publish_dir results \
-    -profile local,two \
+    -profile local,eight \
     -resume
 
 # comment exit below to run without env SCRATCHDIR
